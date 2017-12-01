@@ -1,0 +1,18 @@
+# cd to root directory of git repo
+function cdg() {
+    # check if inside git repo and do nothing if not
+    if [[ $(git rev-parse --is-inside-work-tree 2> /dev/null) != 'true' ]]; then
+        return 1
+    fi
+
+    # get root path of git repo
+    local root_path=$(git rev-parse --show-toplevel)
+
+    # ensure home directory path is correct
+    if [[ $root_path == /local/home* ]]; then
+        local root_path=${root_path/\/local\/home/\/home}
+    fi
+
+    # cd to the root of the git repo
+    cd "$root_path"
+}

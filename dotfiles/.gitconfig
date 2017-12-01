@@ -1,0 +1,7 @@
+[user]
+	name = Asemlef
+	email = asemlef@users.noreply.github.com
+[color]
+    ui = auto
+[core]
+    pager = less -FMRiX
