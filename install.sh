@@ -16,7 +16,7 @@ for f in $(ls -A1 $sourcedir/dotfiles); do
         mv $HOME/$f $HOME/$f.bak
     # if file already exists and IS a symlink, remove it
     elif [[ -L $HOME/$f && -e $HOME/$f ]]; then
-        rm -f "$HOME/$f"
+        rm -rf "$HOME/$f"
     fi
     ln -s $sourcedir/dotfiles/$f $HOME/$f
 done

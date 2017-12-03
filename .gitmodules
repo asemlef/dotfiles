@@ -28,3 +28,6 @@
 [submodule "dotfiles/.vim/bundle/vim-sensible"]
 	path = dotfiles/.vim/bundle/vim-sensible
 	url = https://github.com/tpope/vim-sensible.git
+[submodule "dotfiles/.vim/bundle/vim-devicons"]
+	path = dotfiles/.vim/bundle/vim-devicons
+	url = https://github.com/ryanoasis/vim-devicons.git
