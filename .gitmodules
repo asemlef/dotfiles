@@ -31,3 +31,6 @@
 [submodule "dotfiles/.vim/bundle/vim-devicons"]
 	path = dotfiles/.vim/bundle/vim-devicons
 	url = https://github.com/ryanoasis/vim-devicons.git
+[submodule "dotfiles/.vim/bundle/salt-vim"]
+	path = dotfiles/.vim/bundle/salt-vim
+	url = https://github.com/saltstack/salt-vim.git

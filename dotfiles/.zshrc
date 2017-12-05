@@ -28,11 +28,8 @@ zstyle ':completion:*' menu select
 zstyle ':completion:*' verbose yes
 
 # source secondary config files
-for f in zshrc_pl9k zshrc_functions; do
-    if [[ -s ${ZDOTDIR:-$HOME}/.$f ]]; then
-        source ${ZDOTDIR:-$HOME}/.$f
-    fi
-done
+source ${ZDOTDIR:-$HOME}/.zshrc_functions
+source ${ZDOTDIR:-$HOME}/.zshrc_pl9k
 
 # source local config (if extant)
 [[ -s ${ZDOTDIR:-$HOME}/.zshrc_local ]] && source ${ZDOTDIR:-$HOME}/.zshrc_local
