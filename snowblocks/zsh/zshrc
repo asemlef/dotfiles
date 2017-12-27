@@ -1,0 +1,94 @@
+# ------------------------------
+# Tmux
+# ------------------------------
+# start tmux by default
+if [[ ! -n "$TMUX" ]]; then
+    # tmux attach-session || exec tmux new-session;
+fi
+
+# ------------------------------
+# Pre-Plugin Configuration
+# ------------------------------
+# ensure powerlevel9k uses the proper icons
+POWERLEVEL9K_MODE='nerdfont-complete'
+
+# ------------------------------
+# Plugins
+# ------------------------------
+# install zplug if absent
+#if [[ ! -d ~/.zplug ]]; then
+#    print -P "%F{red}Installing zplug...%f"
+#    git clone https://github.com/zplug/zplug ~/.zplug
+#    print
+#fi
+
+source ~/.zplug/init.zsh
+
+# allow zplug to update itself
+zplug "zplug/zplug", hook-build:'zplug --self-manage'
+# fancy theme
+zplug "bhilburn/powerlevel9k", use:powerlevel9k.zsh-theme
+# ensure correct dircolors for ls
+zplug "seebi/dircolors-solarized", ignore:"*", as:plugin
+# various prompt completion and history enhancements
+zplug "zsh-users/zsh-completions",              defer:0
+zplug "zsh-users/zsh-autosuggestions",          defer:2, on:"zsh-users/zsh-completions"
+zplug "zsh-users/zsh-syntax-highlighting",      defer:3, on:"zsh-users/zsh-autosuggestions"
+zplug "zsh-users/zsh-history-substring-search", defer:3, on:"zsh-users/zsh-syntax-highlighting"
+
+# prompt to install missing plugins
+#if ! zplug check; then
+#    printf "Install zsh plugins? [y/N]: "
+#    if read -q; then
+#        echo; zplug install
+#        echo
+#    fi
+#fi
+
+# load plugins
+zplug load
+
+# ------------------------------
+# Configuration
+# ------------------------------
+# set directory colors from plugin
+eval $(dircolors $ZPLUG_HOME/repos/seebi/dircolors-solarized/dircolors.256dark)
+
+# fix autosuggest colors to work with solarized-dark
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=60'
+
+# rebind up/down arrow keys to history-substring-search
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
+
+# history
+HISTSIZE=999999
+SAVEHIST=999999
+HISTFILE=$ZDOTDIR/.zhistory
+setopt inc_append_history   # write to history file immediately, rather than on exit
+setopt no_share_history     # do not share history between multiple sessions
+setopt extended_history     # write to history file using ':start:elapsed;command' format
+
+# tab completion
+zstyle ':completion:::::' completer _complete _approximate
+zstyle ':completion:*:descriptions' format "- %d -"
+zstyle ':completion:*:corrections' format "- %d - (errors %e})"
+zstyle ':completion:*:default' list-prompt '%S%M matches%s'
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*:manuals' separate-sections true
+zstyle ':completion:*:manuals.(^1*)' insert-sections true
+zstyle ':completion:*' menu select
+zstyle ':completion:*' verbose yes
+zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
+
+# ------------------------------
+# Sources
+# ------------------------------
+# powerlevel9k configuration
+source $ZDOTDIR/powerlevel9k.zsh
+
+# functions
+source $ZDOTDIR/functions.zsh
+
+# local configuration (if present)
+[[ -s $ZDOTDIR/local.zsh ]] && source $ZDOTDIR/local.zsh

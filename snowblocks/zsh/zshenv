@@ -1,0 +1,10 @@
+# store zsh configuration in ~/.zsh
+ZDOTDIR=$HOME/.zsh
+
+# editors
+EDITOR='vim'
+VISUAL='vim'
+PAGER='less'
+
+# less options
+LESS='-g -i -M -R -S -w -z-4'

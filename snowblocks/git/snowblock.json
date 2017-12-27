@@ -1,0 +1,13 @@
+[
+    {
+        "clean": [
+            "~",
+            "~/.zsh"
+        ]
+    },
+    {
+        "link": {
+            "~/.gitconfig": {"relink": true}
+        }
+    }
+]

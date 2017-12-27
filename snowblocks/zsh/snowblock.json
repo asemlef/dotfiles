@@ -1,0 +1,29 @@
+[
+    {
+        "clean": [
+            "~",
+            "~/.zsh"
+        ]
+    },
+    {
+        "link": {
+            "~/.bashrc": {"relink": true},
+            "~/.zshenv": {"relink": true},
+            "~/.zsh/.zshrc": {"create": true, "relink": true},
+            "~/.zsh/powerlevel9k.zsh": {"create": true, "relink": true},
+            "~/.zsh/functions.zsh": {"create": true, "relink": true}
+        }
+    },
+    {
+        "shell": [
+            {
+                "command": "if [[ ! -d ~/.zplug ]]; then git clone https://github.com/zplug/zplug ~/.zplug; fi",
+                "description": "install zplug from git"
+            },
+            {
+                "command": "zsh -ic \"if ! zplug check; then zplug install; fi\"",
+                "description": "install plugins for zplug"
+            }
+        ]
+    }
+]

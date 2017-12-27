@@ -7,7 +7,7 @@ fi
 
 # User specific aliases and functions
 
-# If this is a login shell, switch to zsh
+# If this is a login shell and zsh is present, switch to zsh
 if shopt -q login_shell && [[ -e /bin/zsh ]]; then
     SHELL=/bin/zsh
     exec /bin/zsh --login
