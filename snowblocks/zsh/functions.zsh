@@ -42,7 +42,8 @@ function updateall () {
 
     fi
     # homebrew
-    if hash brew 2>/dev/null; then
+    #if hash brew 2>/dev/null; then
+    if (( $+commands[brew] )); then
         print -P "%F{green}Updating homebrew:%f"
         brew upgrade --cleanup
     fi
