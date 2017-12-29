@@ -7,13 +7,6 @@ POWERLEVEL9K_MODE='nerdfont-complete'
 # ------------------------------
 # Plugins
 # ------------------------------
-# install zplug if absent
-#if [[ ! -d ~/.zplug ]]; then
-#    print -P "%F{red}Installing zplug...%f"
-#    git clone https://github.com/zplug/zplug ~/.zplug
-#    print
-#fi
-
 source ~/.zplug/init.zsh
 
 # allow zplug to update itself
@@ -27,15 +20,6 @@ zplug "zsh-users/zsh-completions",              defer:0
 zplug "zsh-users/zsh-autosuggestions",          defer:2, on:"zsh-users/zsh-completions"
 zplug "zsh-users/zsh-syntax-highlighting",      defer:3, on:"zsh-users/zsh-autosuggestions"
 zplug "zsh-users/zsh-history-substring-search", defer:3, on:"zsh-users/zsh-syntax-highlighting"
-
-# prompt to install missing plugins
-#if ! zplug check; then
-#    printf "Install zsh plugins? [y/N]: "
-#    if read -q; then
-#        echo; zplug install
-#        echo
-#    fi
-#fi
 
 # load plugins
 zplug load

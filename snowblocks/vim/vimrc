@@ -3,13 +3,6 @@ set nocompatible
 " ------------------------------
 " Plugins
 " ------------------------------
-" install vim-plug if absent
-"if empty(glob('~/.vim/autoload/plug.vim'))
-"  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-"    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-"  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC | q
-"endif
-
 " install and configure plugins
 call plug#begin('~/.vim/plugged')
 
@@ -58,6 +51,9 @@ call plug#begin('~/.vim/plugged')
     " Fancy icons for airline, nerdtree, ctrl-p
     Plug 'ryanoasis/vim-devicons'
 
+    " Fix FocusGained and FocusLost events while in tmux
+    Plug 'tmux-plugins/vim-tmux-focus-events'
+
 call plug#end()
 
 " automatically install any new plugins
@@ -66,7 +62,7 @@ if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
 endif
 
 " ------------------------------
-" Style Optons
+" Style
 " ------------------------------
 set laststatus=2        " always show status bar
 set showbreak=↪         " indicator for lines that have been wrapped
@@ -84,6 +80,17 @@ set complete-=i                 " don't scan included files for word completion
 if v:version > 703 || v:version == 703 && has("patch541")
     set formatoptions+=j " Delete comment character when joining commented lines
 endif
+
+" automatically set paste mode when pasting
+let &t_SI .= "\<Esc>[?2004h"
+let &t_EI .= "\<Esc>[?2004l"
+inoremap <special> <expr> <Esc>[200~ XTermPasteBegin()
+
+function! XTermPasteBegin()
+    set pastetoggle=<Esc>[201~
+    set paste
+    return ""
+endfunction
 
 " -------------------------------------
 "  Text
