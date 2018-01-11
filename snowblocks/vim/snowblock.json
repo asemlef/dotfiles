@@ -14,7 +14,7 @@
                 "description": "install vim-plug from git"
             },
             {
-                "command": "vim -c \"PlugInstall|qa\"",
+                "command": "vim -c 'PlugInstall|qa' < /dev/tty",
                 "description": "install plugins for vim"
             }
         ]
