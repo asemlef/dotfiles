@@ -29,7 +29,7 @@ function updateall () {
         print "Update complete."
     fi
     # neovim vim-plug
-    if [[ -s $HOME/.config/nvim/autoload/plug.vim ]]; then
+    if [[ -s $HOME/.local/share/nvim/site/autoload/plug.vim ]]; then
         print -P "%F{green}Updating neovim:%f"
         command nvim -c "PlugUpgrade|PlugUpdate"
         print "Update complete."
