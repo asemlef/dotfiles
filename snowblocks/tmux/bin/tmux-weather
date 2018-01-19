@@ -62,17 +62,17 @@ case $weather_condition in
         weather_color='colour110'
         ;;
     # rain
-    [5-6]* | [8-12]* | 35 | 40 | 45)
+    5| 6 | 8 | 9 | 10 | 11 | 12 | 35 | 40 | 45)
         weather_icon=''
         weather_color='colour75'
         ;;
     # thunderstorm
-    [3-4]* | [37-39]* | 47)
+    3 | 4 | 37 | 38 | 39 | 47)
         weather_icon=''
         weather_color='colour75'
         ;;
     # snow
-    7 | [13-18]* | [41-43]* | 46)
+    7 | 13 | 14 | 15 | 16 | 17 | 18 | 41 | 42 | 43 | 46)
         weather_icon=''
         weather_color='colour7'
         ;;
@@ -82,12 +82,12 @@ case $weather_condition in
         weather_color='colour67'
         ;;
     # fog, haze, smoke
-    [20-22]*)
+    20 | 21 | 22)
         weather_icon=''
         weather_color='colour10'
         ;;
     # tornado, hurricane, etc
-    [0-2]*)
+    0 | 1 | 2)
         weather_icon=''
         weather_color='colour160'
         ;;
