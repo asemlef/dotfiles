@@ -1,0 +1,21 @@
+#!/bin/bash
+set -euo pipefail
+IFS=$'\n\t'
+
+# take number from shell
+number=$1
+
+# convert to superscript
+number=$(sed 's/0/⁰/g' <<< $number)
+number=$(sed 's/1/¹/g' <<< $number)
+number=$(sed 's/2/²/g' <<< $number)
+number=$(sed 's/3/³/g' <<< $number)
+number=$(sed 's/4/⁴/g' <<< $number)
+number=$(sed 's/5/⁵/g' <<< $number)
+number=$(sed 's/6/⁶/g' <<< $number)
+number=$(sed 's/7/⁷/g' <<< $number)
+number=$(sed 's/8/⁸/g' <<< $number)
+number=$(sed 's/9/⁹/g' <<< $number)
+
+# return converted string
+echo $number

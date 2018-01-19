@@ -25,7 +25,13 @@ function updateall () {
     # vim-plug
     if [[ -s $HOME/.vim/autoload/plug.vim ]]; then
         print -P "%F{green}Updating vim:%f"
-        vim -c "PlugUpgrade|PlugUpdate"
+        command vim -c "PlugUpgrade|PlugUpdate"
+        print "Update complete."
+    fi
+    # neovim vim-plug
+    if [[ -s $HOME/.config/nvim/autoload/plug.vim ]]; then
+        print -P "%F{green}Updating neovim:%f"
+        command nvim -c "PlugUpgrade|PlugUpdate"
         print "Update complete."
     fi
     # zplug
@@ -42,7 +48,6 @@ function updateall () {
 
     fi
     # homebrew
-    #if hash brew 2>/dev/null; then
     if (( $+commands[brew] )); then
         print -P "%F{green}Updating homebrew:%f"
         brew upgrade --cleanup

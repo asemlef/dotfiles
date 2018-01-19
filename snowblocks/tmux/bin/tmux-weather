@@ -1,0 +1,95 @@
+#!/bin/bash
+
+weather_url="https://query.yahooapis.com/v1/public/yql?format=xml&q=SELECT%20*%20FROM%20weather.forecast%20WHERE%20u=%27f%27%20AND%20woeid%20=%20%272490383%27"
+cache_file="$HOME/.tmux/.tmux_weather_cache"
+cache_time=600
+
+# check if cache file is too old
+if [ -f $cachefile ]; then
+    fileage=$(($(date +%s) - $(date +%s -r "$cache_file")))
+    if (( $fileage < $cache_time )); then
+        cat $cache_file
+        exit 0
+    fi
+fi
+
+# get weather info
+weather_data=$(curl --max-time 4 -s "$weather_url")
+weather_unit=$(echo $weather_data | grep -Zo "<yweather:units [^<>]*/>" | sed 's/.*temperature="\([^"]*\)".*/\1/')
+weather_temperature=$(echo $weather_data | grep -Zo "<yweather:condition [^<>]*/>" | sed 's/.*temp="\([^"]*\)".*/\1/')
+#weather_condition=$(echo $weather_data | grep -Zo "<yweather:condition [^<>]*/>" | sed 's/.*text="\([^"]*\)".*/\1/')
+weather_condition=$(echo $weather_data | grep -Zo "<yweather:condition [^<>]*/>" | sed 's/.*code="\([^"]*\)".*/\1/')
+
+case $weather_condition in
+    # clear (day)
+    32 | 34)
+        weather_icon=''
+        weather_color='colour172'
+        ;;
+    # clear (night)
+    31 | 33)
+        weather_icon=''
+        weather_color='colour67'
+        ;;
+    # hot
+    36)
+        weather_icon=''
+        weather_color='colour160'
+        ;;
+    # cold
+    36)
+        weather_icon=''
+        weather_color='colour7'
+        ;;
+    # cloudy
+    26 | 44)
+        weather_icon=''
+        weather_color='colour110'
+        ;;
+    # cloudy (day)
+    28 | 30)
+        weather_icon=''
+        weather_color='colour110'
+        ;;
+    # cloudy (night)
+    27 | 29)
+        weather_icon=''
+        weather_color='colour110'
+        ;;
+    # rain
+    [5-6]* | [8-12]* | 35 | 40 | 45)
+        weather_icon=''
+        weather_color='colour75'
+        ;;
+    # thunderstorm
+    [3-4]* | [37-39]* | 47)
+        weather_icon=''
+        weather_color='colour226'
+        ;;
+    # snow
+    7 | [13-18]* | [41-43]* | 46)
+        weather_icon=''
+        weather_color='colour7'
+        ;;
+    # windy
+    23 | 24)
+        weather_icon=''
+        weather_color='colour67'
+        ;;
+    # fog, haze, smoke
+    [20-22]*)
+        weather_icon=''
+        weather_color='colour10'
+        ;;
+    # tornado, hurricane, etc
+    [0-2]*)
+        weather_icon=''
+        weather_color='colour160'
+        ;;
+    *)
+        weather_icon=$weather_condition
+        ;;
+esac
+
+echo "#[fg=colour14]$weather_temperature°$weather_unit #[fg=$weather_color]$weather_icon#[fg=default]"
+echo "#[fg=colour14]$weather_temperature°$weather_unit #[fg=$weather_color]$weather_icon#[fg=default]" > $cache_file

@@ -61,6 +61,10 @@ zstyle ':completion:*' menu select
 zstyle ':completion:*' verbose yes
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 
+# key bindings
+bindkey '' beginning-of-line
+bindkey '' end-of-line
+
 # ------------------------------
 # Sources
 # ------------------------------

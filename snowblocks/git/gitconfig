@@ -6,3 +6,5 @@
 [core]
     pager = less -FMRiX
     editor = vim
+[alias]
+    hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
