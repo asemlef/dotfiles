@@ -2,33 +2,21 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-# check if battery command exists
+# check if macOS battery command exists
 if type "pmset" >/dev/null 2>&1; then
     # set battery icon and color by percentage
     batt_pct=$(pmset -g batt | grep -o '[0-9]*%' | tr -d %)
     batt_status=$(pmset -g batt | awk -F '; *' 'NR==2 { print $2 }')
     if [[ $batt_status =~ (^charg*) ]]; then
-        batt_icon=''
         batt_color='green'
-    elif [[ $batt_pct -ge 80 ]]; then
-        batt_icon=''
-        batt_color='yellow'
-    elif [[ $batt_pct -ge 60 ]]; then
-        batt_icon=''
-        batt_color='yellow'
-    elif [[ $batt_pct -ge 40 ]]; then
-        batt_icon=''
-        batt_color='yellow'
     elif [[ $batt_pct -ge 20 ]]; then
-        batt_icon=''
         batt_color='yellow'
     else
-        batt_icon=''
         batt_color='red'
     fi
-    # print the thing
-    #print -P "%F{green}$batt_pct%% $batt_icon%f"
-    echo "#[fg=$batt_color]$batt_pct% $batt_icon#[fg=default]"
+    # print battery info formatted for tmux
+    echo "#[fg=${batt_color}]${batt_pct}%#[fg=default]#{status_separator}"
 else
-    echo "#[fg=green]#[fg=default]"
+    # print nothing
+    echo ""
 fi

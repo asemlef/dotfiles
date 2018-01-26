@@ -20,7 +20,7 @@
                 "description": "install vim-plug from git"
             },
             {
-                "command": "command nvim -c 'PlugInstall|qa'",
+                "command": "if type 'nvim' &> /dev/null; then command nvim -c 'PlugInstall|qa'; fi",
                 "description": "install plugins for vim"
             }
         ]

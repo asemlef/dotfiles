@@ -37,10 +37,6 @@ else
 # fix autosuggest colors to work with solarized-dark
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=60'
 
-# rebind up/down arrow keys to history-substring-search
-bindkey '^[[A' history-substring-search-up
-bindkey '^[[B' history-substring-search-down
-
 # history
 HISTSIZE=999999
 SAVEHIST=999999
@@ -61,9 +57,17 @@ zstyle ':completion:*' menu select
 zstyle ':completion:*' verbose yes
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 
-# key bindings
+# set terminal title
+echo -ne "\033]0;${HOST%%.*}\007"
+
+# ------------------------------
+# Key Bindings
+# ------------------------------
 bindkey '' beginning-of-line
 bindkey '' end-of-line
+# rebind up/down arrow keys to history-substring-search
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
 
 # ------------------------------
 # Sources

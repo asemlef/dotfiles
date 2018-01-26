@@ -2,99 +2,110 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-weather_url="https://query.yahooapis.com/v1/public/yql?format=xml&q=SELECT%20*%20FROM%20weather.forecast%20WHERE%20u=%27f%27%20AND%20woeid%20=%20%272490383%27"
-cache_file="$HOME/.tmux/.tmux_weather_cache"
-cache_time=600
+# variables
+city_id="5809844"   # Seattle
+api_key="6fbde35bc10b3a1e3e3c60c42c82176b"
+url="http://api.openweathermap.org/data/2.5/weather?APPID=$api_key&id=$city_id&units=imperial"
+cache_file="$HOME/.tmux/.weather_cache"
+cache_time=10   # in minutes
 
-# check if cache file is too old
-if [ -f $cache_file ]; then
-	if [[ "$OSTYPE" == darwin* ]]; then
-   		fileage=$(($(gdate +%s) - $(gdate +%s -r "$cache_file")))
+# fetch data from API
+if [[ -f $cache_file ]]; then
+    curtime=$(date +%s)
+    file_curtime=$(date +%s -r "$cache_file")
+    roundedtime=$(($curtime - ($curtime % ($cache_time * 60))))
+    file_roundedtime=$(($file_curtime - ($file_curtime % ($cache_time * 60))))
+    if (( $roundedtime == $file_roundedtime )); then
+        weather_data=$(cat $cache_file)
     else
-        fileage=$(($(date +%s) - $(date +%s -r "$cache_file")))
-    fi
-  	if (( $fileage < $cache_time )); then
-      	cat $cache_file
-      	exit 0
+        weather_data=$(curl --silent $url)
+        echo $weather_data > $cache_file
   	fi
+else
+    weather_data=$(curl --silent $url)
+    echo $weather_data > $cache_file
 fi
 
-# get weather info
-weather_data=$(curl --max-time 4 -s "$weather_url")
-weather_unit=$(echo $weather_data | grep -Zo "<yweather:units [^<>]*/>" | sed 's/.*temperature="\([^"]*\)".*/\1/')
-weather_temperature=$(echo $weather_data | grep -Zo "<yweather:condition [^<>]*/>" | sed 's/.*temp="\([^"]*\)".*/\1/')
-weather_condition=$(echo $weather_data | grep -Zo "<yweather:condition [^<>]*/>" | sed 's/.*code="\([^"]*\)".*/\1/')
+# parse temperature and wind speed
+weather_temperature=$(echo $weather_data | python -c "import sys, json; print json.load(sys.stdin)['main']['temp']" | cut -d . -f 1)
+weather_wind_speed=$(echo $weather_data | python -c "import sys, json; print json.load(sys.stdin)['wind']['speed']" | cut -d . -f 1)
 
-case $weather_condition in
-    # clear (day)
-    32 | 34)
-        weather_icon=''
-        weather_color='colour172'
-        ;;
-    # clear (night)
-    31 | 33)
-        weather_icon=''
-        weather_color='colour67'
-        ;;
-    # hot
-    36)
-        weather_icon=''
-        weather_color='colour160'
-        ;;
-    # cold
-    36)
-        weather_icon=''
-        weather_color='colour7'
-        ;;
-    # cloudy
-    26 | 44)
-        weather_icon=''
-        weather_color='colour110'
-        ;;
-    # cloudy (day)
-    28 | 30)
-        weather_icon=''
-        weather_color='colour110'
-        ;;
-    # cloudy (night)
-    27 | 29)
-        weather_icon=''
-        weather_color='colour110'
-        ;;
-    # rain
-    5| 6 | 8 | 9 | 10 | 11 | 12 | 35 | 40 | 45)
-        weather_icon=''
-        weather_color='colour75'
-        ;;
-    # thunderstorm
-    3 | 4 | 37 | 38 | 39 | 47)
-        weather_icon=''
-        weather_color='colour75'
-        ;;
+# parse weather conditions for best category to use
+weather_con_highest=0
+weather_con_len=$(($(echo $weather_data | python -c "import sys, json; print len(json.load(sys.stdin)['weather'])") - 1 ))
+for i in $(seq 0 $weather_con_len); do
+    weather_con_id=$(echo $weather_data | python -c "import sys, json; print json.load(sys.stdin)['weather'][$i]['id']")
+    weather_con_icon=$(echo $weather_data | python -c "import sys, json; print json.load(sys.stdin)['weather'][$i]['icon']")
+    # extreme weather (tornado, hurricane, etc)
+    if [[ $weather_con_id =~ ^9[0-9][0-9]$ ]]; then
+        if [[ $weather_con_highest -lt 8 ]]; then
+            weather_icon=''
+            weather_color='colour160'
+            weather_con_highest=8
+        fi
     # snow
-    7 | 13 | 14 | 15 | 16 | 17 | 18 | 41 | 42 | 43 | 46)
-        weather_icon=''
-        weather_color='colour7'
-        ;;
-    # windy
-    23 | 24)
-        weather_icon=''
-        weather_color='colour67'
-        ;;
-    # fog, haze, smoke
-    20 | 21 | 22)
-        weather_icon=''
-        weather_color='colour10'
-        ;;
-    # tornado, hurricane, etc
-    0 | 1 | 2)
-        weather_icon=''
+    elif [[ $weather_con_id =~ ^6[0-9][0-9]$ ]]; then
+        if [[ $weather_con_highest -lt 7 ]]; then
+            weather_icon=''
+            weather_color='colour7'
+            weather_con_highest=7
+        fi
+    # thunderstorm
+    elif [[ $weather_con_id =~ ^2[0-9][0-9]$ ]]; then
+        if [[ $weather_con_highest -lt 6 ]]; then
+            weather_icon=''
+            weather_color='colour67'
+            weather_con_highest=6
+        fi
+    # rain
+    elif [[ $weather_con_id =~ ^5[0-9][1-9]$ ]]; then
+        if [[ $weather_con_highest -lt 5 ]]; then
+            weather_icon=''
+            weather_color='colour67'
+            weather_con_highest=5
+        fi
+    # drizzle
+    elif [[ $weather_con_id =~ ^3[0-9][0-9]$ ]] || [[ $weather_con_id == 500 ]]; then
+        if [[ $weather_con_highest -lt 4 ]]; then
+            weather_icon=''
+            weather_color='colour75'
+            weather_con_highest=4
+        fi
+    # fog, mist, smoke, ash, etc
+    elif [[ $weather_con_id =~ ^7[0-9][0-9]$ ]]; then
+        if [[ $weather_con_highest -lt 3 ]]; then
+            weather_icon='░'
+            weather_color='colour144'
+            weather_con_highest=3
+        fi
+    # clouds
+    elif [[ $weather_con_id =~ ^80[1-9]$ ]]; then
+        if [[ $weather_con_highest -lt 2 ]]; then
+            weather_icon=''
+            weather_color='colour110'
+            weather_con_highest=2
+        fi
+    # clear
+    elif [[ $weather_con_id == 800 ]]; then
+        if [[ $weather_con_highest -lt 1 ]]; then
+            if [[ $weather_con_icon = *'d' ]]; then
+                weather_icon=''
+                weather_color='colour172'
+            elif [[ $weather_con_icon = *'n' ]]; then
+                weather_icon=''
+                weather_color='colour67'
+            else
+                weather_icon='C'
+                weather_color='colour160'
+            fi
+            weather_con_highest=1
+        fi
+    # catchall for unexpected state
+    else
+        weather_icon='?'
         weather_color='colour160'
-        ;;
-    *)
-        weather_icon=$weather_condition
-        ;;
-esac
+    fi
+done
 
-echo "#[fg=colour14]${weather_temperature}°${weather_unit} #[fg=${weather_color}]${weather_icon}#[fg=default]"
-echo "#[fg=colour14]${weather_temperature}°${weather_unit} #[fg=${weather_color}]${weather_icon}#[fg=default]" > $cache_file
+# print weather info formatted for tmux
+echo "#[fg=colour14]${weather_temperature}°F #[fg=${weather_color}]${weather_icon}  #[fg=colour14]${weather_wind_speed}#[fg=default] "
