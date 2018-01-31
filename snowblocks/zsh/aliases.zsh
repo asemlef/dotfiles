@@ -9,6 +9,9 @@ if [[ "$OSTYPE" == darwin* ]]; then
     alias date='gdate'
 fi
 
+# use aliases with sudo
+alias sudo='sudo '
+
 # use neovim instead of vim
 if (( $+commands[nvim] )); then
     alias vim='nvim'

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -euo pipefail
 IFS=$'\n\t'
 
@@ -12,7 +12,7 @@ cache_time=10   # in minutes
 # fetch data from API
 if [[ -f $cache_file ]]; then
     curtime=$(date +%s)
-    file_curtime=$(date +%s -r "$cache_file")
+    file_curtime=$(date -r "$cache_file" +%s)
     roundedtime=$(($curtime - ($curtime % ($cache_time * 60))))
     file_roundedtime=$(($file_curtime - ($file_curtime % ($cache_time * 60))))
     if (( $roundedtime == $file_roundedtime )); then
@@ -57,18 +57,18 @@ for i in $(seq 0 $weather_con_len); do
             weather_color='colour67'
             weather_con_highest=6
         fi
-    # rain
-    elif [[ $weather_con_id =~ ^5[0-9][1-9]$ ]]; then
-        if [[ $weather_con_highest -lt 5 ]]; then
-            weather_icon=''
-            weather_color='colour67'
-            weather_con_highest=5
-        fi
     # drizzle
     elif [[ $weather_con_id =~ ^3[0-9][0-9]$ ]] || [[ $weather_con_id == 500 ]]; then
-        if [[ $weather_con_highest -lt 4 ]]; then
+        if [[ $weather_con_highest -lt 5 ]]; then
             weather_icon=''
             weather_color='colour75'
+            weather_con_highest=5
+        fi
+    # rain
+    elif [[ $weather_con_id =~ ^5[0-9][1-9]$ ]]; then
+        if [[ $weather_con_highest -lt 4 ]]; then
+            weather_icon=''
+            weather_color='colour67'
             weather_con_highest=4
         fi
     # fog, mist, smoke, ash, etc

@@ -1,5 +1,3 @@
-set nocompatible
-
 " ------------------------------
 " Plugins
 " ------------------------------
@@ -64,6 +62,24 @@ call plug#begin('~/.local/share/nvim/plugged')
     " Use tmux clipboard and share clipboard between nvim sessions
     "Plug 'roxma/vim-tmux-clipboard'
 
+    " Autocompletion for various languages (requires python3)
+    if has('python3')
+        " Autocompletion tool
+        Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+        let g:deoplete#enable_at_startup = 1
+        " Java
+        Plug 'artur-shaik/vim-javacomplete2'
+        autocmd FileType java setlocal omnifunc=javacomplete#Complete
+        " Python
+        Plug 'zchee/deoplete-jedi'
+        " Ruby
+        Plug 'fishbullet/deoplete-ruby'
+        " Vim
+        Plug 'Shougo/neco-vim'
+    else
+        autocmd VimEnter * echohl WarningMsg | echom "python3 missing!" | echohl None
+    endif
+
 call plug#end()
 
 " automatically install any new plugins
@@ -79,7 +95,6 @@ set showbreak=↪         " indicator for lines that have been wrapped
 "set list                " always show unprintable characters
 set listchars=tab:▸\ ,trail:•,extends:›,precedes:‹,eol:↲,nbsp:␣
 set mouse=a             " enable mouse for all modes
-"set ttymouse=xterm2     " improved mouse drag handling
 
 " ------------------------------
 " Editing
@@ -176,7 +191,11 @@ set history=1000    " keep 1000 commands in history
 " Copy yank buffer to system clipboard
 " Use OSC52 to put things into the system clipboard, works over SSH!
 function! Osc52Yank()
-  let buffer=system('base64 -w0', @0)
+  if has('macunix')
+    let buffer=system('base64', @0)
+  else
+    let buffer=system('base64 -w0', @0)
+  endif
   let buffer=substitute(buffer, "\n$", "", "")
   let buffer='\e]52;c;'.buffer.'\x07'
 
@@ -201,6 +220,5 @@ vnoremap <leader>y :<C-u>norm! gvy<cr>:Osc52CopyYank<cr>
 " ------------------------------
 " Misc
 " ------------------------------
+set nocompatible
 set wildmenu
-" these fix some weird issues with airline and tagbar
-autocmd VimEnter * redraw!
