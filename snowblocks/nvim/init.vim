@@ -4,7 +4,9 @@
 if !has('nvim')
     " force vim to use the right paths
     set runtimepath^=~/.config/nvim runtimepath+=~/.local/share/nvim/site runtimepath+=~/.config/nvim/after
-    let &packpath = &runtimepath
+    if v:version >= 800
+        let &packpath = &runtimepath
+    endif
 
     if v:version > 703 || v:version == 703 && has("patch541")
         set formatoptions+=j " Delete comment character when joining commented lines
