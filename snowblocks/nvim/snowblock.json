@@ -10,6 +10,10 @@
             "~/.config/nvim/init.vim": {
                 "create": true,
                 "relink": true
+            },
+            "~/.vimrc": {
+                "path": "init.vim",
+                "relink": true
             }
         }
     },
@@ -20,7 +24,7 @@
                 "description": "install vim-plug from git"
             },
             {
-                "command": "if type 'nvim' &> /dev/null; then command nvim -c 'PlugInstall|qa'; fi",
+                "command": "if type 'nvim' &> /dev/null; then command nvim -c 'PlugInstall|qa'; else command vim -c 'PlugInstall|qa' < /dev/tty; fi",
                 "description": "install plugins for vim"
             }
         ]

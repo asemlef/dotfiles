@@ -1,4 +1,44 @@
 " ------------------------------
+" Vim Compatibility
+" ------------------------------
+if !has('nvim')
+    " force vim to use the right paths
+    set runtimepath^=~/.config/nvim runtimepath+=~/.local/share/nvim/site runtimepath+=~/.config/nvim/after
+    let &packpath = &runtimepath
+
+    if v:version > 703 || v:version == 703 && has("patch541")
+        set formatoptions+=j " Delete comment character when joining commented lines
+    endif
+
+    " automatically set paste mode when pasting
+    let &t_SI .= "\<Esc>[?2004h"
+    let &t_EI .= "\<Esc>[?2004l"
+    inoremap <special> <expr> <Esc>[200~ XTermPasteBegin()
+
+    function! XTermPasteBegin()
+        set pastetoggle=<Esc>[201~
+        set paste
+        return ""
+    endfunction
+
+    " Allow color schemes to do bright colors without forcing bold.
+    if &t_Co == 8 && $TERM !~# '^linux\|^Eterm'
+      set t_Co=16
+    endif
+
+    " create swap and backup directories if absent
+    if !isdirectory($HOME."/.local/share/nvim/backup")
+        call mkdir($HOME."/.local/share/nvim/backup", "p")
+    endif
+    if !isdirectory($HOME."/.local/share/nvim/swap")
+        call mkdir($HOME."/.local/share/nvim/swap", "p")
+    endif
+
+    " misc settings
+    set ttymouse=xterm2     " improved mouse drag handling
+endif
+
+" ------------------------------
 " Plugins
 " ------------------------------
 " install and configure plugins
@@ -65,7 +105,13 @@ call plug#begin('~/.local/share/nvim/plugged')
     " Autocompletion for various languages (requires python3)
     if has('python3')
         " Autocompletion tool
-        Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+        if has('nvim')
+            Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+        else
+            Plug 'Shougo/deoplete.nvim'
+            Plug 'roxma/nvim-yarp'
+            Plug 'roxma/vim-hug-neovim-rpc'
+        endif
         let g:deoplete#enable_at_startup = 1
         " Java
         Plug 'artur-shaik/vim-javacomplete2'
@@ -88,13 +134,10 @@ if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
 endif
 
 " ------------------------------
-" Style
+" Navigation
 " ------------------------------
-set laststatus=2        " always show status bar
-set showbreak=↪         " indicator for lines that have been wrapped
-"set list                " always show unprintable characters
-set listchars=tab:▸\ ,trail:•,extends:›,precedes:‹,eol:↲,nbsp:␣
-set mouse=a             " enable mouse for all modes
+set mouse=a         " enable mouse for all modes
+set scrolloff=3     " keep 3 lines visible when scrolling
 
 " ------------------------------
 " Editing
@@ -102,37 +145,19 @@ set mouse=a             " enable mouse for all modes
 set backspace=indent,eol,start  " backspace works on everything
 set nrformats-=octal            " don't parse octal numbers for addition/subtraction
 set complete-=i                 " don't scan included files for word completion
-"set formatoptions-=cro          " disable automatically adding comments on new lines
 
-if v:version > 703 || v:version == 703 && has("patch541")
-    set formatoptions+=j " Delete comment character when joining commented lines
-endif
-
-" automatically set paste mode when pasting
-let &t_SI .= "\<Esc>[?2004h"
-let &t_EI .= "\<Esc>[?2004l"
-inoremap <special> <expr> <Esc>[200~ XTermPasteBegin()
-
-function! XTermPasteBegin()
-    set pastetoggle=<Esc>[201~
-    set paste
-    return ""
-endfunction
-
-" -------------------------------------
-"  Text
-" -------------------------------------
-set scrolloff=3         " keep 3 lines visible when scrolling
+" ------------------------------
+" Style
+" ------------------------------
+set laststatus=2        " always show status bar
+set showbreak=↪         " indicator for lines that have been wrapped
+"set list                " always show unprintable characters
+set listchars=tab:▸\ ,trail:•,extends:›,precedes:‹,eol:↲,nbsp:␣
 
 " if solarized theme is present, use it
 if isdirectory($HOME."/.local/share/nvim/plugged/vim-colors-solarized")
     set background=dark
     colorscheme solarized
-endif
-
-" Allow color schemes to do bright colors without forcing bold.
-if &t_Co == 8 && $TERM !~# '^linux\|^Eterm'
-  set t_Co=16
 endif
 
 " -------------------------------------
@@ -147,7 +172,7 @@ set shiftwidth=4    " indenting shifts 4 spaces
 autocmd Filetype ruby setlocal ts=2 sw=2
 
 " ------------------------------
-" Buffer
+" Buffers
 " ------------------------------
 set hidden  " allow switching from modified buffers
 set confirm " prompt for confirmation when quitting with unsaved changes
@@ -167,23 +192,17 @@ endif
 " ------------------------------
 " Backup & Swap
 " ------------------------------
-set nobackup
-"set backupdir=~/.vim-tmp/bak,/tmp   " backup files are created here
-"set directory=~/.vim-tmp/swps//     " all swap files are stored here
-
-" create swap and backup directories if absent
-"if !isdirectory($HOME."/.vim-tmp/swps")
-"    call mkdir($HOME."/.vim-tmp/swps", "p")
-"endif
-"if !isdirectory($HOME."/.vim-tmp/bak")
-"    call mkdir($HOME."/.vim-tmp/bak", "p")
-"endif
+set nobackup    " do not create a permanent backup of a file when writing
+set writebackup " create a temporary backup of a file when writing
+set backupdir=.,~/.local/share/nvim/backup      " backup files are created here
+set directory=~/.local/share/nvim/swap//        " all swap files are stored here
 
 " ------------------------------
 " Command
 " ------------------------------
 set showcmd         " show commands in the bottom right as they're typed
 set history=1000    " keep 1000 commands in history
+set wildmenu
 
 " ------------------------------
 " Copy/Paste
@@ -215,10 +234,3 @@ command! Osc52CopyYank call Osc52Yank()
 nnoremap <leader>y :Osc52CopyYank<cr>
 " Copy selection to system clipboard
 vnoremap <leader>y :<C-u>norm! gvy<cr>:Osc52CopyYank<cr>
-"vnoremap y :<C-u>norm! gvy<cr>:Osc52CopyYank<cr>
-
-" ------------------------------
-" Misc
-" ------------------------------
-set nocompatible
-set wildmenu

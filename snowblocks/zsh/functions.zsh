@@ -23,15 +23,13 @@ function cdg () {
 # update various plugins and packages
 function updateall () {
     # vim-plug
-    if [[ -s $HOME/.vim/autoload/plug.vim ]]; then
-        print -P "%F{green}Updating vim:%f"
-        command vim -c "PlugUpgrade|PlugUpdate"
-        print "Update complete."
-    fi
-    # neovim vim-plug
     if [[ -s $HOME/.local/share/nvim/site/autoload/plug.vim ]]; then
-        print -P "%F{green}Updating neovim:%f"
-        command nvim -c "PlugUpgrade|PlugUpdate"
+        print -P "%F{green}Updating vim:%f"
+        if (( $+commands[nvim] )); then
+            nvim -c "PlugUpgrade|PlugUpdate"
+        else
+            vim -c "PlugUpgrade|PlugUpdate"
+        fi
         print "Update complete."
     fi
     # zplug
