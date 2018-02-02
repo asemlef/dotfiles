@@ -212,22 +212,27 @@ set wildmenu
 " Copy yank buffer to system clipboard
 " Use OSC52 to put things into the system clipboard, works over SSH!
 function! Osc52Yank()
-  if has('macunix')
-    let buffer=system('base64', @0)
-  else
-    let buffer=system('base64 -w0', @0)
-  endif
-  let buffer=substitute(buffer, "\n$", "", "")
-  let buffer='\e]52;c;'.buffer.'\x07'
+    if has('macunix')
+        let buffer=system('base64', @0)
+    else
+        let buffer=system('base64 -w0', @0)
+    endif
+    let buffer=substitute(buffer, "\n$", "", "")
+    let buffer='\e]52;c;'.buffer.'\x07'
 
-  " Need special escaping if within tmux
-  if $TMUX != ''
-    let buffer='\ePtmux;\e'.buffer.'\e\\'
-  endif
+    " Need special escaping if within tmux
+    if $TMUX != ''
+        let buffer='\ePtmux;\e'.buffer.'\e\\'
+    endif
 
-  " Must output to /dev/tty, otherwise the escape codes don't make it out to the
-  " terminal
-  silent exe "!echo -ne ".shellescape(buffer)." > /dev/tty"
+    " Must output to /dev/tty, otherwise the escape codes don't make it out to
+    " the terminal
+    if v:version >= 800 && !has('nvim')
+        silent exe "!echo -ne ".shellescape(buffer)." > /dev/tty"
+        redraw!
+    else
+        silent exe "!echo -ne ".shellescape(buffer)." > /dev/tty"
+    endif
 endfunction
 
 command! Osc52CopyYank call Osc52Yank()
