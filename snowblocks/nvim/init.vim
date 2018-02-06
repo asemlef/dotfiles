@@ -46,7 +46,7 @@ endif
 " install and configure plugins
 call plug#begin('~/.local/share/nvim/plugged')
 
-    " solarized colors
+    " solarized color theme
     Plug 'altercation/vim-colors-solarized'
 
     " git wrapper for vim
@@ -58,19 +58,24 @@ call plug#begin('~/.local/share/nvim/plugged')
     " Fuzzy path finder
     Plug 'ctrlpvim/ctrlp.vim'
 
-    " Highlight trailing whitespace
+    " Highlight and strip trailing whitespace
     Plug 'ntpeters/vim-better-whitespace'
 
+    " Simple text alignment
+    Plug 'junegunn/vim-easy-align', { 'on': 'EasyAlign' }
+
     " Undo tree browser
-    Plug 'sjl/gundo.vim'
-    " Add keybind for gundo here
+    Plug 'sjl/gundo.vim', { 'on': 'GundoToggle' }
+    "autocmd! User gundo.vim echom 'gundo is now loaded!'
+    if has('python3')
+        let g:gundo_prefer_python3=1
+    endif
+    nnoremap <leader>g :GundoToggle<CR>
 
     " File tree browser
-    Plug 'scrooloose/nerdtree'
-    Plug 'Xuyuanp/nerdtree-git-plugin'
+    Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+    Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': 'NERDTreeToggle' }
     map <C-n> :NERDTreeToggle<CR>
-    " automatically close vim if nerdtree is only window
-    "autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
     " Better status line
     Plug 'vim-airline/vim-airline'
@@ -99,12 +104,11 @@ call plug#begin('~/.local/share/nvim/plugged')
     Plug 'ryanoasis/vim-devicons'
 
     " Fix FocusGained and FocusLost events while in tmux
-    Plug 'tmux-plugins/vim-tmux-focus-events'
+    if !has('nvim')
+        Plug 'tmux-plugins/vim-tmux-focus-events'
+    endif
 
-    " Use tmux clipboard and share clipboard between nvim sessions
-    "Plug 'roxma/vim-tmux-clipboard'
-
-    " Autocompletion for various languages (requires python3)
+    " Autocompletion for various languages
     if has('python3')
         " Autocompletion tool
         if has('nvim')
@@ -116,17 +120,20 @@ call plug#begin('~/.local/share/nvim/plugged')
         endif
         let g:deoplete#enable_at_startup = 1
         " Java
-        Plug 'artur-shaik/vim-javacomplete2'
+        Plug 'artur-shaik/vim-javacomplete2', { 'for': 'java' }
         autocmd FileType java setlocal omnifunc=javacomplete#Complete
         " Python
-        Plug 'zchee/deoplete-jedi'
+        Plug 'zchee/deoplete-jedi', { 'for': 'python' }
         " Ruby
-        Plug 'fishbullet/deoplete-ruby'
+        Plug 'fishbullet/deoplete-ruby', { 'for': 'ruby' }
         " Vim
-        Plug 'Shougo/neco-vim'
-    else
+        Plug 'Shougo/neco-vim', { 'for': 'vim' }
+    elseif has('nvim')
         autocmd VimEnter * echohl WarningMsg | echom "python3 missing!" | echohl None
     endif
+
+    " Additional filetypes
+    Plug 'saltstack/salt-vim'   " SaltStack .sls files
 
 call plug#end()
 
@@ -204,7 +211,7 @@ set directory=~/.local/share/nvim/swap//        " all swap files are stored here
 " ------------------------------
 set showcmd         " show commands in the bottom right as they're typed
 set history=1000    " keep 1000 commands in history
-set wildmenu
+set wildmenu        " enable command completion menu
 
 " ------------------------------
 " Copy/Paste

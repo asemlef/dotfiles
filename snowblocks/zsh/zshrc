@@ -32,7 +32,7 @@ if [[ "$OSTYPE" == darwin* ]]; then
     eval $(gdircolors $ZPLUG_HOME/repos/seebi/dircolors-solarized/dircolors.256dark)
 else
     eval $(dircolors $ZPLUG_HOME/repos/seebi/dircolors-solarized/dircolors.256dark)
- fi
+fi
 
 # fix autosuggest colors to work with solarized-dark
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=60'
