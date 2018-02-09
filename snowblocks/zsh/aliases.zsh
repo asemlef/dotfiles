@@ -23,9 +23,12 @@ alias cp="${aliases[cp]:-cp} -i"
 alias mv="${aliases[mv]:-mv} -i"
 alias ln="${aliases[ln]:-ln} -i"
 
-# use color diff output
-alias diff="${aliases[diff]:-diff} --old-line-format=$'\e[0;31m%L\e[0m' --new-line-format=$'\e[0;32m%L\e[0m'"
+# format diff nicely with color
+alias diff="${aliases[diff]:-diff} --old-line-format=$'\e[0;31m-%L\e[0m' --new-line-format=$'\e[0;32m+%L\e[0m'"
+
+# use pretty color output where possible
+alias ls="${aliases[ls]:-ls} --color=auto"
+alias grep="${aliases[grep]:-grep} --color=auto"
 
 # misc useful
 alias mkdir="${aliases[mkdir]:-mkdir} -p"
-alias ls="${aliases[ls]:-ls} --color=auto"
