@@ -9,6 +9,7 @@
         "link": {
             "~/.bashrc": {"relink": true},
             "~/.zshenv": {"relink": true},
+            "~/.colordiffrc": {"relink": true},
             "~/.zsh/.zshrc": {"create": true, "relink": true},
             "~/.zsh/powerlevel9k.zsh": {"create": true, "relink": true},
             "~/.zsh/functions.zsh": {"create": true, "relink": true},
