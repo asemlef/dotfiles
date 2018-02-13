@@ -109,7 +109,7 @@ call plug#begin('~/.local/share/nvim/plugged')
     endif
 
     " Autocompletion for various languages
-    if has('python3')
+    if has('python3') && v:version >= 800
         " Autocompletion tool
         if has('nvim')
             Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
