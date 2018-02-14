@@ -132,6 +132,11 @@ call plug#begin('~/.local/share/nvim/plugged')
         autocmd VimEnter * echohl WarningMsg | echom "python3 missing!" | echohl None
     endif
 
+    " Syntax checking for various languages
+    Plug 'vim-syntastic/syntastic'
+    let g:syntastic_check_on_open = 1
+    let g:syntastic_check_on_wq = 0
+
     " Additional filetypes
     Plug 'saltstack/salt-vim'   " SaltStack .sls files
     Plug 'chr4/nginx.vim'       " nginx config files
