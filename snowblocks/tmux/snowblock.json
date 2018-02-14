@@ -2,7 +2,7 @@
     {
         "clean": [
             "~",
-            "~/bin"
+            "~/.local/bin"
         ]
     },
     {
@@ -10,17 +10,17 @@
             "~/.tmux.conf": {
                 "relink": true
             },
-            "~/bin/tmux-superscript": {
+            "~/.local/bin/tmux-superscript": {
                 "create": true,
                 "relink": true,
                 "path": "bin/tmux-superscript"
             },
-            "~/bin/tmux-weather": {
+            "~/.local/bin/tmux-weather": {
                 "create": true,
                 "relink": true,
                 "path": "bin/tmux-weather"
             },
-            "~/bin/tmux-battery": {
+            "~/.local/bin/tmux-battery": {
                 "create": true,
                 "relink": true,
                 "path": "bin/tmux-battery"

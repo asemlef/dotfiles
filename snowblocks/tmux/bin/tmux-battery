@@ -7,7 +7,7 @@ if type "pmset" >/dev/null 2>&1; then
     # set battery icon and color by percentage
     batt_pct=$(pmset -g batt | grep -o '[0-9]*%' | tr -d %)
     batt_status=$(pmset -g batt | awk -F '; *' 'NR==2 { print $2 }')
-    if [[ $batt_status =~ (charg*) ]]; then
+    if [[ $batt_status =~ (^charg*) ]] || [[ $batt_status == "finishing charge" ]]; then
         batt_color='green'
     elif [[ $batt_pct -ge 20 ]]; then
         batt_color='yellow'

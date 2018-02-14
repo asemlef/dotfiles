@@ -134,6 +134,7 @@ call plug#begin('~/.local/share/nvim/plugged')
 
     " Additional filetypes
     Plug 'saltstack/salt-vim'   " SaltStack .sls files
+    Plug 'chr4/nginx.vim'       " nginx config files
 
 call plug#end()
 
