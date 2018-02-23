@@ -2,30 +2,37 @@
     {
         "clean": [
             "~",
-            "~/.zsh"
+            "~/.zsh",
+            "~/.config/zsh"
         ]
     },
     {
         "link": {
-            "~/.bashrc": {"relink": true},
-            "~/.zshenv": {"relink": true},
-            "~/.colordiffrc": {"relink": true},
-            "~/.zsh/.zshrc": {"create": true, "relink": true},
-            "~/.zsh/powerlevel9k.zsh": {"create": true, "relink": true},
-            "~/.zsh/functions.zsh": {"create": true, "relink": true},
-            "~/.zsh/aliases.zsh": {"create": true, "relink": true}
-        }
-    },
-    {
-        "shell": [
-            {
-                "command": "if [[ ! -d ~/.zplug ]]; then git clone https://github.com/zplug/zplug ~/.zplug; fi",
-                "description": "install zplug from git"
+            "~/.bashrc": {
+                "relink": true
             },
-            {
-                "command": "zsh -ic \"if ! zplug check; then zplug install; fi\"",
-                "description": "install plugins for zplug"
+            "~/.zshenv": {
+                "relink": true
+            },
+            "~/.colordiffrc": {
+                "relink": true
+            },
+            "~/.config/zsh/.zshrc": {
+                "create": true,
+                "relink": true
+            },
+            "~/.config/zsh/powerlevel9k.zsh": {
+                "create": true,
+                "relink": true
+            },
+            "~/.config/zsh/functions.zsh": {
+                "create": true,
+                "relink": true
+            },
+            "~/.config/zsh/aliases.zsh": {
+                "create": true,
+                "relink": true
             }
-        ]
+        }
     }
 ]

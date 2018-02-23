@@ -30,6 +30,9 @@ alias cp="${aliases[cp]:-cp} -i"
 alias mv="${aliases[mv]:-mv} -i"
 alias ln="${aliases[ln]:-ln} -i"
 
+# ls with proper options
+alias ll="${aliases[ls]:-ls} -la"
+
 # format diff nicely
 alias diff="${aliases[diff]:-diff} -u"
 

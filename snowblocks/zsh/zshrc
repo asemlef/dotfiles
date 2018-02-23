@@ -7,7 +7,18 @@ POWERLEVEL9K_MODE='nerdfont-complete'
 # ------------------------------
 # Plugins
 # ------------------------------
-source ~/.zplug/init.zsh
+# use XDG paths for zplug
+ZPLUG_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/zplug"
+ZPLUG_CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/zplug"
+
+# install zplug if absent
+if [[ ! -d ~/.local/share/zplug ]]; then
+    print -P "%F{green}Installing zplug...%f"
+    git clone https://github.com/zplug/zplug ~/.local/share/zplug
+    print
+fi
+
+source "${XDG_DATA_HOME:-$HOME/.local/share}/zplug/init.zsh"
 
 # allow zplug to update itself
 zplug "zplug/zplug", hook-build:'zplug --self-manage'
@@ -20,6 +31,13 @@ zplug "zsh-users/zsh-completions",              defer:0
 zplug "zsh-users/zsh-autosuggestions",          defer:2, on:"zsh-users/zsh-completions"
 zplug "zsh-users/zsh-syntax-highlighting",      defer:3, on:"zsh-users/zsh-autosuggestions"
 zplug "zsh-users/zsh-history-substring-search", defer:3, on:"zsh-users/zsh-syntax-highlighting"
+
+# install missing plugins
+if ! zplug check; then
+    print -P "%F{green}Installing zsh plugins...%f"
+    zplug install
+    print
+fi
 
 # load plugins
 zplug load
@@ -38,9 +56,9 @@ fi
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=60'
 
 # history
+HISTFILE="${XDG_DATA_HOME:-$HOME/.local/share}/zsh_history"
 HISTSIZE=999999
 SAVEHIST=999999
-HISTFILE=$ZDOTDIR/.zhistory
 setopt inc_append_history   # write to history file immediately, rather than on exit
 setopt no_share_history     # do not share history between multiple sessions
 setopt extended_history     # write to history file using ':start:elapsed;command' format
