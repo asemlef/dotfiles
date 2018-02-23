@@ -2,12 +2,19 @@
     {
         "clean": [
             "~",
-            "~/.zsh"
+            "~/.config/git"
         ]
     },
     {
         "link": {
-            "~/.gitconfig": {"relink": true}
+            "~/.config/git/config": {
+                "create": true,
+                "relink": true
+            },
+            "~/.config/git/excludes": {
+                "create": true,
+                "relink": true
+            }
         }
     }
 ]

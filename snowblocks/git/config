@@ -3,5 +3,7 @@
     email = asemlef@users.noreply.github.com
 [color]
     ui = auto
+[core]
+    excludesfile = ~/.config/git/excludes
 [alias]
     hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
