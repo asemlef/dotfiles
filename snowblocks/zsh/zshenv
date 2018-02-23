@@ -4,6 +4,9 @@ export ZDOTDIR=$HOME/.zsh
 # source local binaries
 export PATH="$HOME/.local/bin:$PATH"
 
+# force vim to use XDG path for vimrc
+export VIMINIT='let $MYVIMRC="~/.config/nvim/init.vim" | source $MYVIMRC'
+
 # editors
 if (( $+commands[nvim] )); then
     export EDITOR='nvim'
