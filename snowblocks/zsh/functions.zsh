@@ -31,11 +31,13 @@ function updateall () {
             vim -c "PlugUpgrade|PlugUpdate"
         fi
         print "Update complete."
+        print
     fi
     # zplug
-    if [[ -d $HOME/.zplug ]]; then
+    if [[ -d $HOME/.local/share/zplug ]]; then
         print -P "%F{green}Updating zsh:%f"
         zplug update
+        print
     fi
     # tmux tpm
     if [[ -d $HOME/.tmux/plugins/tpm ]]; then
@@ -43,11 +45,12 @@ function updateall () {
         $HOME/.tmux/plugins/tpm/bin/install_plugins
         $HOME/.tmux/plugins/tpm/bin/update_plugins all
         $HOME/.tmux/plugins/tpm/bin/clean_plugins
-
+        print
     fi
     # homebrew
     if (( $+commands[brew] )); then
         print -P "%F{green}Updating homebrew:%f"
         brew upgrade --cleanup
+        print
     fi
 }
