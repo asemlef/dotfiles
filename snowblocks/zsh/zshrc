@@ -47,7 +47,10 @@ zplug load
 # ------------------------------
 # set directory colors from plugin
 if [[ "$OSTYPE" == darwin* ]]; then
-    eval $(gdircolors $ZPLUG_HOME/repos/seebi/dircolors-solarized/dircolors.256dark)
+    export LSCOLORS=exgxDHDHcxaHaHHbHDHcex
+    if (( $+commands[gdircolors] )); then
+        eval $(gdircolors $ZPLUG_HOME/repos/seebi/dircolors-solarized/dircolors.256dark)
+    fi
 else
     eval $(dircolors $ZPLUG_HOME/repos/seebi/dircolors-solarized/dircolors.256dark)
 fi

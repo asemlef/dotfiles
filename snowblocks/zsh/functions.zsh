@@ -50,6 +50,7 @@ function updateall () {
     # homebrew
     if (( $+commands[brew] )); then
         print -P "%F{green}Updating homebrew:%f"
+        brew update --force
         brew upgrade --cleanup
         print
     fi

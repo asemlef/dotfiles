@@ -27,15 +27,14 @@ else
 fi
 
 # parse temperature and wind speed
-weather_temperature=$(echo $weather_data | python -c "import sys, json; print json.load(sys.stdin)['main']['temp']" | cut -d . -f 1)
-weather_wind_speed=$(echo $weather_data | python -c "import sys, json; print json.load(sys.stdin)['wind']['speed']" | cut -d . -f 1)
+weather_temperature=$(echo $weather_data | jq .main.temp | cut -d . -f 1)
+weather_wind_speed=$(echo $weather_data | jq .wind.speed | cut -d . -f 1)
 
 # parse weather conditions for best category to use
 weather_con_highest=0
-weather_con_len=$(($(echo $weather_data | python -c "import sys, json; print len(json.load(sys.stdin)['weather'])") - 1 ))
-for i in $(seq 0 $weather_con_len); do
-    weather_con_id=$(echo $weather_data | python -c "import sys, json; print json.load(sys.stdin)['weather'][$i]['id']")
-    weather_con_icon=$(echo $weather_data | python -c "import sys, json; print json.load(sys.stdin)['weather'][$i]['icon']")
+for w in $(echo $weather_data | jq -c ".weather | .[]"); do
+    weather_con_id=$(echo $w | jq .id)
+    weather_con_icon=$(echo $w | jq .icon)
     # extreme weather (tornado, hurricane, etc)
     if [[ $weather_con_id =~ ^9[0-9][0-9]$ ]]; then
         if [[ $weather_con_highest -lt 8 ]]; then

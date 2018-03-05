@@ -31,7 +31,7 @@ alias mv="${aliases[mv]:-mv} -i"
 alias ln="${aliases[ln]:-ln} -i"
 
 # ls with proper options
-alias ll="${aliases[ls]:-ls} -la"
+alias ll="${aliases[ls]:-ls} -lA"
 
 # format diff nicely
 alias diff="${aliases[diff]:-diff} -u"
