@@ -87,10 +87,10 @@ for w in $(echo $weather_data | jq -c ".weather | .[]"); do
     # clear
     elif [[ $weather_con_id == 800 ]]; then
         if [[ $weather_con_highest -lt 1 ]]; then
-            if [[ $weather_con_icon = *'d' ]]; then
+            if [[ "${weather_con_icon//\"}" = *'d' ]]; then
                 weather_icon=''
                 weather_color='colour172'
-            elif [[ $weather_con_icon = *'n' ]]; then
+            elif [[ "${weather_con_icon//\"}" = *'n' ]]; then
                 weather_icon=''
                 weather_color='colour67'
             else
