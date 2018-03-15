@@ -52,6 +52,7 @@ function updateall () {
         print -P "%F{green}Updating homebrew:%f"
         brew update --force
         brew upgrade --cleanup
+        brew cask upgrade
         print
     fi
 }
