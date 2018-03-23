@@ -26,17 +26,5 @@
                 "path": "bin/battery"
             }
         }
-    },
-    {
-        "shell": [
-            {
-                "command": "git -C ~/.tmux/plugins/tpm pull || git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm",
-                "description": "install TPM (tmux plugin manager) from git"
-            },
-            {
-                "command": "~/.tmux/plugins/tpm/bin/install_plugins",
-                "description": "install tmux plugins"
-            }
-        ]
     }
 ]
