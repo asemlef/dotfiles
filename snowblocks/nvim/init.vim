@@ -154,7 +154,7 @@ call plug#end()
 
 " automatically install any new plugins
 if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
-  autocmd VimEnter * PlugUpdate --sync | source $MYVIMRC | q
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC | q
 endif
 
 " ------------------------------
@@ -207,6 +207,7 @@ set confirm " prompt for confirmation when quitting with unsaved changes
 set hlsearch    " highlight search terms
 set ignorecase  " ignore letter case
 set smartcase   " DON'T ignore letter case if capitals are present
+set incsearch   " search as you type
 
 " Use <C-L> to clear the highlighting of :set hlsearch.
 if maparg('<C-L>', 'n') ==# ''
@@ -240,16 +241,18 @@ function! Osc52Yank()
         let buffer=system('base64 -w0', @0)
     endif
     let buffer=substitute(buffer, "\n$", "", "")
-    let buffer='\e]52;c;'.buffer.'\x07'
+    let buffer="\e]52;c;".buffer."\x07"
 
     " Need special escaping if within tmux
     if $TMUX != ''
-        let buffer='\ePtmux;\e'.buffer.'\e\\'
+        let buffer="\ePtmux;\e".buffer."\e\\"
     endif
 
     " Must output to /dev/tty, otherwise the escape codes don't make it out to
     " the terminal
-    if v:version >= 800 && !has('nvim')
+    if has('nvim')
+        call chansend(v:stderr, buffer)
+    elseif v:version >= 800
         silent exe "!echo -ne ".shellescape(buffer)." > /dev/tty"
         redraw!
     else
