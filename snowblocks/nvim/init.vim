@@ -54,7 +54,7 @@ endif
 call plug#begin('~/.local/share/nvim/plugged')
 
     " solarized color theme
-    Plug 'altercation/vim-colors-solarized'
+    Plug 'lifepillar/vim-solarized8'
 
     " git wrapper for vim
     Plug 'tpope/vim-fugitive'
@@ -177,11 +177,12 @@ set laststatus=2        " always show status bar
 set showbreak=↪         " indicator for lines that have been wrapped
 "set list                " always show unprintable characters
 set listchars=tab:▸\ ,trail:•,extends:›,precedes:‹,eol:↲,nbsp:␣
+set termguicolors       " use 24-bit colors
 
 " if solarized theme is present, use it
 if isdirectory($HOME."/.local/share/nvim/plugged/vim-colors-solarized")
     set background=dark
-    colorscheme solarized
+    colorscheme solarized8
 endif
 
 " -------------------------------------

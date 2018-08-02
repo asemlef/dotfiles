@@ -40,14 +40,14 @@ for w in $(echo $weather_data | jq -c ".weather | .[]"); do
     if [[ $weather_con_id == "901" ]] | [[ $weather_con_id == "902" ]] || [[ $weather_con_id == "962" ]]; then
         if [[ $weather_con_highest -lt 100 ]]; then
             weather_icon=''
-            weather_color='colour1'
+            weather_color='#dc322f' # red
             weather_con_highest=100
         fi
     # tornado
     elif [[ $weather_con_id == "781" ]] || [[ $weather_con_id == "900" ]]; then
         if [[ $weather_con_highest -lt 100 ]]; then
             weather_icon=''
-            weather_color='colour1'
+            weather_color='#dc322f' # red
             weather_con_highest=100
         fi
 
@@ -56,14 +56,14 @@ for w in $(echo $weather_data | jq -c ".weather | .[]"); do
     elif [[ $weather_con_id =~ ^61[1-2] ]]; then
         if [[ $weather_con_highest -lt 99 ]]; then
             weather_icon=''
-            weather_color='colour7'
+            weather_color='#eee8d5' # white
             weather_con_highest=99
         fi
     # snow
     elif [[ $weather_con_id =~ ^6[0-9][0-9] ]]; then
         if [[ $weather_con_highest -lt 98 ]]; then
             weather_icon=''
-            weather_color='colour7'
+            weather_color='#eee8d5' # white
             weather_con_highest=98
         fi
 
@@ -71,7 +71,7 @@ for w in $(echo $weather_data | jq -c ".weather | .[]"); do
     elif [[ $weather_con_id =~ ^2[0-9][0-9]$ ]]; then
         if [[ $weather_con_highest -lt 80 ]]; then
             weather_icon=''
-            weather_color='colour184'
+            weather_color='#d7d700' # bright yellow
             weather_con_highest=80
         fi
 
@@ -80,14 +80,14 @@ for w in $(echo $weather_data | jq -c ".weather | .[]"); do
     elif [[ $weather_con_id =~ ^3[0-9][0-9]$ ]] || [[ $weather_con_id == "500" ]]; then
         if [[ $weather_con_highest -lt 79 ]]; then
             weather_icon=''
-            weather_color='colour75'
+            weather_color='#5fafff' # light blue
             weather_con_highest=79
         fi
     # heavy rain
     elif [[ $weather_con_id =~ ^5[0-9][0-9]$ ]]; then
         if [[ $weather_con_highest -lt 78 ]]; then
             weather_icon=''
-            weather_color='colour75'
+            weather_color='#5fafff' # light blue
             weather_con_highest=78
         fi
 
@@ -96,21 +96,21 @@ for w in $(echo $weather_data | jq -c ".weather | .[]"); do
     elif [[ $weather_con_id == "711" ]]; then
         if [[ $weather_con_highest -lt 69 ]]; then
             weather_icon=''
-            weather_color='colour144'
+            weather_color='#afaf87' # smoky grey
             weather_con_highest=69
         fi
     # dust
     elif [[ $weather_con_id == "761" ]]; then
         if [[ $weather_con_highest -lt 69 ]]; then
             weather_icon=''
-            weather_color='colour144'
+            weather_color='#afaf87' # smoky grey
             weather_con_highest=69
         fi
     # generic fog
     elif [[ $weather_con_id =~ ^7[0-9][0-9]$ ]]; then
         if [[ $weather_con_highest -lt 60 ]]; then
             weather_icon=''
-            weather_color='colour144'
+            weather_color='#afaf87' # smoky grey
             weather_con_highest=60
         fi
 
@@ -119,14 +119,14 @@ for w in $(echo $weather_data | jq -c ".weather | .[]"); do
     elif [[ $weather_con_id == "804" ]]; then
         if [[ $weather_con_highest -lt 59 ]]; then
             weather_icon=''
-            weather_color='colour110'
+            weather_color='#87afd7' # lighter blue
             weather_con_highest=59
         fi
     # light clouds
     elif [[ $weather_con_id =~ ^80[1-9]$ ]]; then
         if [[ $weather_con_highest -lt 50 ]]; then
             weather_icon=''
-            weather_color='colour110'
+            weather_color='#87afd7' # lighter blue
             weather_con_highest=50
         fi
 
@@ -135,13 +135,13 @@ for w in $(echo $weather_data | jq -c ".weather | .[]"); do
         if [[ $weather_con_highest -lt 1 ]]; then
             if [[ "${weather_con_icon//\"}" = *'d' ]]; then
                 weather_icon=''
-                weather_color='colour172'
+                weather_color='#d78700' # orange
             elif [[ "${weather_con_icon//\"}" = *'n' ]]; then
                 weather_icon=''
-                weather_color='colour67'
+                weather_color='#5f87af' # steel blue
             else
                 weather_icon='C'
-                weather_color='colour160'
+                weather_color='#dc322f' # red
             fi
             weather_con_highest=1
         fi
@@ -149,9 +149,9 @@ for w in $(echo $weather_data | jq -c ".weather | .[]"); do
     ### catchall for unexpected state
     else
         weather_icon='?'
-        weather_color='colour160'
+        weather_color='#dc322f' # red
     fi
 done
 
 # print weather info formatted for tmux
-echo "#[fg=colour14]${weather_temperature}°F #[fg=${weather_color}]${weather_icon} #[fg=default]"
+echo "#[fg=#93a1a1]${weather_temperature}°F #[fg=${weather_color}]${weather_icon} #[fg=default]"
