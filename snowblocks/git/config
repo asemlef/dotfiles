@@ -7,3 +7,5 @@
     excludesfile = ~/.config/git/excludes
 [alias]
     hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
+[blame]
+    date = relative
