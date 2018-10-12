@@ -5,6 +5,7 @@
     ui = auto
 [core]
     excludesfile = ~/.config/git/excludes
+    pager = less -FMRiX
 [alias]
     hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
 [blame]
