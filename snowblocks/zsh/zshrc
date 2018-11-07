@@ -1,14 +1,22 @@
 # ------------------------------
-# Pre-Plugin Configuration
+# Pyenv
 # ------------------------------
-# use XDG paths for zplug
-ZPLUG_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/zplug"
-ZPLUG_CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/zplug"
+if [[ -d $HOME/.local/share/pyenv ]]; then
+    export PYENV_ROOT="$HOME/.local/share/pyenv"
+    export PATH="$PYENV_ROOT/bin:$PATH"
+    export PYENV_VIRTUALENV_DISABLE_PROMPT=1
+    eval "$(pyenv init -)"
+    eval "$(pyenv virtualenv-init -)"
+fi
 
 
 # ------------------------------
 # Plugins
 # ------------------------------
+# use XDG paths for zplug
+ZPLUG_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/zplug"
+ZPLUG_CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/zplug"
+
 # install zplug if absent
 if [[ ! -d ~/.local/share/zplug ]]; then
     print -P "%F{green}Installing zplug...%f"
@@ -77,6 +85,9 @@ zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 
 # set terminal title
 echo -ne "\033]0;${HOST%%.*}\007"
+
+# source local binaries
+export PATH="$HOME/.local/bin:$PATH"
 
 # ------------------------------
 # Key Bindings

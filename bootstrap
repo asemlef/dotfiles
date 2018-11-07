@@ -1,10 +1,16 @@
 #!/usr/bin/env bash
-set -e
+set -euo pipefail
+IFS=$'\n\t'
 
-SNOWSAW_DIR=".snowsaw"
-SNOWSAW_BIN="bin/snowsaw"
-
-SNOWBLOCKS_BASE_DIR_NAME="snowblocks"
-SNOWBLOCKSDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/$SNOWBLOCKS_BASE_DIR_NAME"
-
-python3 "${SNOWSAW_DIR}/${SNOWSAW_BIN}" -s "${SNOWBLOCKSDIR}" "${@}"
+if [[ -d ~/.local/share/pyenv/versions/dotfiles ]]; then
+    ~/.local/share/pyenv/versions/dotfiles/bin/python ".snowsaw/bin/snowsaw" -s "snowblocks" --plugin-dir "plugins" "${@}"
+else
+    #echo "dotfiles virtualenv is missing! run pyenv.sh to install pyenv and create the virtualenv"
+    #exit 1
+    echo "dotfiles virtualenv is missing!"
+    read -p "Attempt to use system python3 binary instead? (y/N)" -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        python3 ".snowsaw/bin/snowsaw" -s "snowblocks" --plugin-dir "plugins" "${@}"
+    fi
+fi

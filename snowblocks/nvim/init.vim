@@ -1,4 +1,11 @@
 " ------------------------------
+" Python Environment
+" ------------------------------
+if has('nvim') && isdirectory($HOME."/.local/share/pyenv/versions/dotfiles")
+    let g:python3_host_prog = $HOME."/.local/share/pyenv/versions/dotfiles/bin/python"
+endif
+
+" ------------------------------
 " Vim Compatibility
 " ------------------------------
 if !has('nvim')
@@ -177,10 +184,12 @@ set laststatus=2        " always show status bar
 set showbreak=↪         " indicator for lines that have been wrapped
 "set list                " always show unprintable characters
 set listchars=tab:▸\ ,trail:•,extends:›,precedes:‹,eol:↲,nbsp:␣
-set termguicolors       " use 24-bit colors
+if v:version >= 800 || has('nvim')
+    set termguicolors       " use 24-bit colors
+endif
 
 " if solarized theme is present, use it
-if isdirectory($HOME."/.local/share/nvim/plugged/vim-colors-solarized")
+if isdirectory($HOME."/.local/share/nvim/plugged/vim-solarized8")
     set background=dark
     colorscheme solarized8
 endif

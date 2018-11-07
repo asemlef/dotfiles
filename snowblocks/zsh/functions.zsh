@@ -47,6 +47,13 @@ function updateall () {
         $HOME/.tmux/plugins/tpm/bin/clean_plugins
         print
     fi
+    # pyenv
+    if (( $+commands[pyenv] )); then
+        print -P "%F{green}Updating pyenv:%f"
+        pyenv update
+        ~/.local/share/pyenv/versions/3.7.0/envs/dotfiles/bin/pip install -U $(~/.local/share/pyenv/versions/3.7.0/envs/dotfiles/bin/pip freeze --disable-pip-version-check | awk '{split($0, a, "=="); print a[1]}') --quiet --disable-pip-version-check
+        print
+    fi
     # homebrew
     if (( $+commands[brew] )); then
         print -P "%F{green}Updating homebrew:%f"

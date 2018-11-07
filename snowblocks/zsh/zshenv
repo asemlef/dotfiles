@@ -6,9 +6,6 @@ export XDG_DATA_HOME=$HOME/.local/share
 # store zsh configuration in ~/.config/zsh
 export ZDOTDIR=$XDG_CONFIG_HOME/zsh
 
-# source local binaries
-export PATH="$HOME/.local/bin:$PATH"
-
 # force vim to use XDG path for vimrc
 export VIMINIT='let $MYVIMRC="~/.config/nvim/init.vim" | source $MYVIMRC'
 
