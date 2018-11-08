@@ -4,13 +4,10 @@ IFS=$'\n\t'
 
 if [[ -d ~/.local/share/pyenv/versions/dotfiles ]]; then
     ~/.local/share/pyenv/versions/dotfiles/bin/python ".snowsaw/bin/snowsaw" -s "snowblocks" --plugin-dir "plugins" "${@}"
+elif command -v python3 > /dev/null; then
+    echo "Dotfiles virtualenv is missing! Using system python instead."
+    python3 ".snowsaw/bin/snowsaw" -s "snowblocks" --plugin-dir "plugins" "${@}"
 else
-    #echo "dotfiles virtualenv is missing! run pyenv.sh to install pyenv and create the virtualenv"
-    #exit 1
-    echo "dotfiles virtualenv is missing!"
-    read -p "Attempt to use system python3 binary instead? (y/N)" -n 1 -r
-    echo
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
-        python3 ".snowsaw/bin/snowsaw" -s "snowblocks" --plugin-dir "plugins" "${@}"
-    fi
+    echo "No usable python install found."
+    exit 1
 fi

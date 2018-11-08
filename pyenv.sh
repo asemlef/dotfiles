@@ -25,7 +25,7 @@ for repo in $repos; do
 done
 
 # set env variables
-PYENV_ROOT="$HOME/.local/share/pyenv"
+export PYENV_ROOT="$HOME/.local/share/pyenv"
 
 # install correct python version in pyenv
 ~/.local/share/pyenv/bin/pyenv install $pyver --skip-existing
