@@ -35,12 +35,15 @@ if !has('nvim')
       set t_Co=16
     endif
 
-    " create swap and backup directories if absent
+    " create swap, backup, and undo directories if absent
     if !isdirectory($HOME."/.local/share/nvim/backup")
         call mkdir($HOME."/.local/share/nvim/backup", "p")
     endif
     if !isdirectory($HOME."/.local/share/nvim/swap")
         call mkdir($HOME."/.local/share/nvim/swap", "p")
+    endif
+    if !isdirectory($HOME."/.local/share/nvim/undo")
+        call mkdir($HOME."/.local/share/nvim/undo", "p")
     endif
 
     " misc settings
@@ -229,8 +232,10 @@ endif
 " ------------------------------
 set nobackup    " do not create a permanent backup of a file when writing
 set writebackup " create a temporary backup of a file when writing
+set undofile    " keep persistent undo history
 set backupdir=.,~/.local/share/nvim/backup      " backup files are created here
-set directory=~/.local/share/nvim/swap//        " all swap files are stored here
+set directory=~/.local/share/nvim/swap//        " swap files are stored here
+set undodir=~/.local/share/nvim/undo            " undo files are stored here
 
 " ------------------------------
 " Command
