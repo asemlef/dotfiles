@@ -21,7 +21,7 @@ else
 fi
 
 # alternate ls alias with nice formatting
-alias ll="LC_COLLATE=C ${aliases[ls]:-ls} -lA"
+alias ll="${aliases[ls]:-ls} -lA"
 
 # format diff nicely and use color if possible
 if (( $+commands[colordiff] )); then

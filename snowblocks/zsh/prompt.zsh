@@ -4,12 +4,12 @@
 function +vi-git-stashes() {
     stashes=$(command git stash list 2> /dev/null | wc -l)
     if [[ stashes -gt 0 ]]; then
-        hook_com[misc]+="%F{240}  $stashes%f"
+        hook_com[misc]+="%F{240}  ${stashes// /}%f"
     fi
 }
 
 function +vi-git-untracked() {
-    if $(command git status --porcelain 2> /dev/null | grep -E '^\?\?' 2> /dev/null); then
+    if [[ $(command git status --porcelain 2> /dev/null | grep -E '^\?\?' 2> /dev/null) ]]; then
         hook_com[unstaged]+="%F{yellow} %f"
     fi
 }
@@ -55,9 +55,15 @@ precmd() {
 # ------------------------------
 # Prompt Layout
 # ------------------------------
-host_color="$(hostname | sum | awk '{print 1 + ($1 % 255)}')"
+if [[ -n "$SSH_CLIENT" || -n "$SSH_TTY" ]]; then
+    host_icon="@"
+    host_color="$(hostname | sum | awk '{print 1 + ($1 % 255)}')"
+else
+    host_icon="^"
+    host_color="white"
+fi
 
 PROMPT=$'
-%F{$host_color}@%f:%F{blue}%~%f ${vcs_info_msg_0_}
+%F{$host_color}$host_icon%f:%F{blue}%~%f ${vcs_info_msg_0_}
 %(?..%F{red}%?%f|)%(!.#.$) '
 RPROMPT=$'%F{cyan}%(1j. %j.)%f'

@@ -51,7 +51,7 @@ function updateall () {
     if (( $+commands[pyenv] )); then
         print -P "%F{green}Updating pyenv:%f"
         pyenv update
-        ~/.local/share/pyenv/versions/3.7.0/envs/dotfiles/bin/pip install -U $(~/.local/share/pyenv/versions/3.7.0/envs/dotfiles/bin/pip freeze --disable-pip-version-check | awk '{split($0, a, "=="); print a[1]}') --quiet --disable-pip-version-check
+        ~/.local/share/pyenv/versions/dotfiles/bin/pip install -U $(~/.local/share/pyenv/versions/dotfiles/bin/pip freeze --disable-pip-version-check | awk '{split($0, a, "=="); print a[1]}') --quiet --disable-pip-version-check
         print
     fi
     # homebrew
