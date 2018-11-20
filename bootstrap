@@ -6,7 +6,7 @@ if [[ -d ~/.local/share/pyenv/versions/dotfiles ]]; then
     ~/.local/share/pyenv/versions/dotfiles/bin/python ".snowsaw/bin/snowsaw" -s "snowblocks" --plugin-dir "plugins" "${@}"
 elif command -v python3 > /dev/null; then
     echo "Dotfiles virtualenv is missing! Using system python instead."
-    python3 ".snowsaw/bin/snowsaw" -s "snowblocks" --plugin-dir "plugins" "${@}"
+    python3 ".snowsaw/bin/snowsaw" -s "snowblocks" --plugin-dir "plugins" "$@"
 else
     echo "No usable python install found."
     exit 1

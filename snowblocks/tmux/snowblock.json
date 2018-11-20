@@ -15,11 +15,6 @@
                 "relink": true,
                 "path": "bin/superscript"
             },
-            "~/.tmux/bin/weather": {
-                "create": true,
-                "relink": true,
-                "path": "bin/weather"
-            },
             "~/.tmux/bin/battery": {
                 "create": true,
                 "relink": true,
