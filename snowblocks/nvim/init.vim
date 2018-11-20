@@ -82,12 +82,11 @@ call plug#begin('~/.local/share/nvim/plugged')
     Plug 'junegunn/vim-easy-align', { 'on': 'EasyAlign' }
 
     " Undo tree browser
-    Plug 'sjl/gundo.vim', { 'on': 'GundoToggle' }
-    "autocmd! User gundo.vim echom 'gundo is now loaded!'
+    Plug 'simnalamburt/vim-mundo', { 'on': 'MundoToggle' }
     if has('python3')
-        let g:gundo_prefer_python3=1
+        let g:mundo_prefer_python3=1
     endif
-    nnoremap <leader>g :GundoToggle<CR>
+    nnoremap <leader>g :MundoToggle<CR>
 
     " File tree browser
     Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
