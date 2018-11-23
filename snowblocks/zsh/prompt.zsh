@@ -9,7 +9,7 @@ function +vi-git-stashes() {
 }
 
 function +vi-git-untracked() {
-    if [[ $(command git status --porcelain 2> /dev/null | grep -E '^\?\?' 2> /dev/null) ]]; then
+    if [[ -n $(command git status --porcelain 2> /dev/null | grep -E '^\?\?' 2> /dev/null) ]]; then
         hook_com[unstaged]+="%F{yellow} %f"
     fi
 }
