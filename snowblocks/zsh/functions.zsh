@@ -20,6 +20,45 @@ function cdg () {
     cd "$root_path"
 }
 
+# print time remaining for kerberos ticket
+function kcheck() {
+    # define variables as local
+    local datecmd
+    local kprintstr
+    local kdate
+    local ktimeleft
+    local ktimestr
+
+    # use homebrew coreutils date on macos
+    if [[ "$OSTYPE" == darwin* ]]; then
+        datecmd='gdate'
+    else
+        datecmd='date'
+    fi
+
+    # check kerberos ticket
+    if (( $+commands[klist] )); then
+        if ! klist -s ; then
+            kprintstr="%B%F{red}00:00:00%f%b"
+        else
+            kdate="$(klist | grep 'krbtgt' | awk 'BEGIN { FS="  " } ; { print $2 }')"
+            ktimeleft=$(($($datecmd -d "$kdate" +%s) - $($datecmd +%s)))
+            ktimestr=$($datecmd -u -d @${ktimeleft} +%T)
+            if [[ $ktimeleft -le 18000 ]]; then
+                kprintstr="%B%F{yellow}$ktimestr%f%b"
+            elif [[ $ktimeleft -le 7200 ]]; then
+                kprintstr="%B%F{red}$ktimestr%f%b"
+            else
+                kprintstr="$ktimestr"
+            fi
+        fi
+        print -P "Kerberos: $kprintstr"
+    else
+        print -P "Kerberos: %B%F{red}klist not present%f%b"
+        return 1
+    fi
+}
+
 # update various plugins and packages
 function updateall () {
     # vim-plug
