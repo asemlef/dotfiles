@@ -41,3 +41,6 @@ alias ln="ln -i"
 
 # automatically create parent directories with mkdir
 alias mkdir="mkdir -p"
+
+# attach to tmux session if extant, else create one
+alias t="tmux attach || tmux new-session"

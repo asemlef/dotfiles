@@ -20,6 +20,11 @@ function cdg () {
     cd "$root_path"
 }
 
+# ssh and automatically create/attach tmux session
+function ssht() {
+    ssh -t $@ "tmux attach -t 0 || tmux new -s 0"
+}
+
 # print time remaining for kerberos ticket
 function kcheck() {
     # define variables as local

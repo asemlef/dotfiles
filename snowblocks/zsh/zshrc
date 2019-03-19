@@ -111,4 +111,4 @@ source $ZDOTDIR/functions.zsh
 source $ZDOTDIR/aliases.zsh
 
 # local configuration (if present)
-[[ -s $ZDOTDIR/local.zsh ]] && source $ZDOTDIR/local.zsh
+[[ -s $ZDOTDIR/local.zsh ]] && source $ZDOTDIR/local.zsh || true
