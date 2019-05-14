@@ -21,7 +21,7 @@ else
 fi
 
 # alternate ls alias with nice formatting
-alias ll="${aliases[ls]:-ls} -lA"
+alias ll="ls -lA"
 
 # format diff nicely and use color if possible
 if (( $+commands[colordiff] )); then

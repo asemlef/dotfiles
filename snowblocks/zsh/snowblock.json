@@ -2,15 +2,11 @@
     {
         "clean": [
             "~",
-            "~/.zsh",
             "~/.config/zsh"
         ]
     },
     {
         "link": {
-            "~/.bashrc": {
-                "relink": true
-            },
             "~/.zshenv": {
                 "relink": true
             },

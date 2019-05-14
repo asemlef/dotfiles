@@ -64,6 +64,6 @@ else
 fi
 
 PROMPT=$'
-%F{$host_color}$host_icon%f:%F{blue}%~%f ${vcs_info_msg_0_}
-%(?..%F{red}%?%f|)%(!.#.$) '
+%(?.%F{$host_color}$host_icon%f.%F{red}%?%f):%F{blue}%~%f ${vcs_info_msg_0_}
+%(!.#.$) '
 RPROMPT=$'%F{cyan}%(1j. %j.)%f'
