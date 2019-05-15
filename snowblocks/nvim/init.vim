@@ -190,11 +190,9 @@ if v:version >= 800 || has('nvim')
     set termguicolors       " use 24-bit colors
 endif
 
-" if solarized theme is present, use it
-if isdirectory($HOME."/.local/share/nvim/plugged/vim-solarized8")
-    set background=dark
-    colorscheme solarized8
-endif
+" set colorscheme if present
+set background=dark
+silent! colorscheme solarized8
 
 " -------------------------------------
 "  Tab & Indentation

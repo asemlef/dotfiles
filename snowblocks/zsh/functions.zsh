@@ -84,11 +84,11 @@ function updateall () {
         print
     fi
     # tmux tpm
-    if [[ -d $HOME/.tmux/plugins/tpm ]]; then
+    if [[ -d $HOME/.local/share/tmux/plugins/tpm ]]; then
         print -P "%F{green}Updating tmux:%f"
-        $HOME/.tmux/plugins/tpm/bin/install_plugins
-        $HOME/.tmux/plugins/tpm/bin/update_plugins all
-        $HOME/.tmux/plugins/tpm/bin/clean_plugins
+        $HOME/.local/share/tmux/plugins/tpm/bin/install_plugins
+        $HOME/.local/share/tmux/plugins/tpm/bin/update_plugins all
+        $HOME/.local/share/tmux/plugins/tpm/bin/clean_plugins
         print
     fi
     # pyenv

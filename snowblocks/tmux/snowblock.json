@@ -1,24 +1,13 @@
 [
     {
         "clean": [
-            "~",
-            "~/.tmux/bin"
+            "~"
         ]
     },
     {
         "link": {
             "~/.tmux.conf": {
                 "relink": true
-            },
-            "~/.tmux/bin/superscript": {
-                "create": true,
-                "relink": true,
-                "path": "bin/superscript"
-            },
-            "~/.tmux/bin/battery": {
-                "create": true,
-                "relink": true,
-                "path": "bin/battery"
             }
         }
     }
