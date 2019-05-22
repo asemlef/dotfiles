@@ -242,39 +242,13 @@ set history=1000    " keep 1000 commands in history
 set wildmenu        " enable command completion menu
 
 " ------------------------------
-" Copy/Paste
+" Clipboard
 " ------------------------------
-" Copy yank buffer to system clipboard
-" Use OSC52 to put things into the system clipboard, works over SSH!
-function! Osc52Yank()
-    if has('macunix')
-        let buffer=system('base64', @0)
-    else
-        let buffer=system('base64 -w0', @0)
-    endif
-    let buffer=substitute(buffer, "\n$", "", "")
-    let buffer="\e]52;c;".buffer."\x07"
-
-    " Need special escaping if within tmux
-    if $TMUX != ''
-        let buffer="\ePtmux;\e".buffer."\e\\"
-    endif
-
-    " Must output to /dev/tty, otherwise the escape codes don't make it out to
-    " the terminal
-    if has('nvim')
-        call chansend(v:stderr, buffer)
-    elseif v:version >= 800
-        silent exe "!echo -ne ".shellescape(buffer)." > /dev/tty"
-        redraw!
-    else
-        silent exe "!echo -ne ".shellescape(buffer)." > /dev/tty"
-    endif
+" Copy yank buffer to system clipboard via xclip
+function! ClipboardCopy()
+    call system('xclip -i -selection clipboard', @@)
 endfunction
 
-command! Osc52CopyYank call Osc52Yank()
-
-" Copy yank register to system
-nnoremap <leader>y :Osc52CopyYank<cr>
-" Copy selection to system clipboard
-vnoremap <leader>y :<C-u>norm! gvy<cr>:Osc52CopyYank<cr>
+" Bind clipboard copy to <leader> + y
+nnoremap <leader>y :call ClipboardCopy()<cr>
+vnoremap <leader>y :<C-u>norm! gvy<cr>:call ClipboardCopy()<cr>

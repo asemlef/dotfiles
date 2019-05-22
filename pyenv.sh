@@ -3,7 +3,7 @@ set -euo pipefail
 IFS=$'\n\t'
 
 # VARIABLES
-pyver="3.7.1"
+pyver="3.7.3"
 ldir=$(dirname $0)
 
 # check if git is available
