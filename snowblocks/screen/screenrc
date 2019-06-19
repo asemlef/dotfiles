@@ -1,0 +1,22 @@
+# ------------------------------
+# Basic Configuration
+# ------------------------------
+term screen-256color            # use terminfo with 256 colors
+truecolor on                    # attempt to use truecolors
+defscrollback 10000             # keep extra scrollback
+mousetrack on                   # enable mouse support
+
+# ------------------------------
+# Keybindings
+# ------------------------------
+escape ^bb      # bind escape to ctrl-b
+
+# navigate windows using shift + arrow keys
+bindkey ^[[1;2D prev
+bindkey ^[[1;2C next
+
+# ------------------------------
+# Status Bar
+# ------------------------------
+hardstatus alwayslastline
+hardstatus string '%{= kw}[%S] %-w%{= wk}%n %t%{-}%+w %=%H | %c'

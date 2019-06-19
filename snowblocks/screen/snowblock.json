@@ -1,0 +1,14 @@
+[
+    {
+        "clean": [
+            "~"
+        ]
+    },
+    {
+        "link": {
+            "~/.screenrc": {
+                "relink": true
+            }
+        }
+    }
+]
