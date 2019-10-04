@@ -202,8 +202,9 @@ set autoindent      " automatically indent new lines
 set tabstop=4       " tabs are 4 spaces wide
 set shiftwidth=4    " indenting shifts 4 spaces
 
-" for ruby, use 2 spaces
+" for ruby and yaml, use 2 spaces
 autocmd Filetype ruby setlocal ts=2 sw=2
+autocmd Filetype yaml setlocal ts=2 sw=2
 
 " ------------------------------
 " Buffers
