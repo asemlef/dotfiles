@@ -1,0 +1,32 @@
+# ------------------------------
+# Configuration
+# ------------------------------
+# source global definitions
+if [ -f /etc/bashrc ]; then
+	. /etc/bashrc
+fi
+
+# ensure local binaries are in PATH
+if ! [[ "$PATH" =~ "$HOME/.local/bin" ]]; then
+    export PATH="$HOME/.local/bin:PATH"
+fi
+
+# ------------------------------
+# Prompt
+# ------------------------------
+#if [[ -n "$SSH_CLIENT" || -n "$SSH_TTY" ]]; then
+#    host_color="$(hostname | sum | awk '{print 1 + ($1 % 255)}')"
+#else
+#    host_color="7"
+#fi
+#PS1="\n\e[38;5;${host_color}m>:\e[0;34m\w\e[m\n\$ "
+PS1="\n\e[0;90m\h\e[0m:\e[0;34m\w\e[0m\n\$ "
+
+# ------------------------------
+# Aliases
+# ------------------------------
+alias sudo='sudo '
+alias ls="ls --color=auto"
+alias ll="ls -lA"
+alias grep="grep --color=auto"
+alias diff="diff -u"

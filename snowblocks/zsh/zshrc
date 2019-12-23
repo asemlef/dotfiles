@@ -86,8 +86,10 @@ zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 # set terminal title
 echo -ne "\033]0;${HOST%%.*}\007"
 
-# source local binaries
-export PATH="$HOME/.local/bin:$PATH"
+# ensure local binaries are in PATH
+if ! [[ "$PATH" =~ "$HOME/.local/bin" ]]; then
+    export PATH="$HOME/.local/bin:$PATH"
+fi
 
 # ------------------------------
 # Key Bindings
