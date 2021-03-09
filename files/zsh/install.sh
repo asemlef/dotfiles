@@ -1,0 +1,5 @@
+copy_file "zshenv" "~/.zshenv"
+copy_file "zshrc" "~/.config/zsh/.zshrc"
+copy_file "prompt.zsh" "~/.config/zsh/prompt.zsh"
+copy_file "functions.zsh" "~/.config/zsh/functions.zsh"
+copy_file "aliases.zsh" "~/.config/zsh/aliases.zsh"

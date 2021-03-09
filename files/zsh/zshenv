@@ -6,17 +6,9 @@ export XDG_DATA_HOME=$HOME/.local/share
 # store zsh configuration in ~/.config/zsh
 export ZDOTDIR=$XDG_CONFIG_HOME/zsh
 
-# force vim to use XDG path for vimrc
-export VIMINIT='let $MYVIMRC="~/.config/nvim/init.vim" | source $MYVIMRC'
-
 # editors
-if (( $+commands[nvim] )); then
-    export EDITOR='nvim'
-    export VISUAL='nvim'
-else
-    export EDITOR='vim'
-    export VISUAL='vim'
-fi
+export EDITOR='vim'
+export VISUAL='vim'
 export PAGER='less'
 
 # less options

@@ -9,7 +9,6 @@ if [[ -d $HOME/.local/share/pyenv ]]; then
     eval "$(pyenv virtualenv-init -)"
 fi
 
-
 # ------------------------------
 # Plugins
 # ------------------------------
@@ -50,14 +49,7 @@ zplug load
 # Configuration
 # ------------------------------
 # set directory colors from plugin
-if [[ "$OSTYPE" == darwin* ]]; then
-    export LSCOLORS=exgxDHDHcxaHaHHbHDHcex
-    if (( $+commands[gdircolors] )); then
-        eval $(gdircolors $ZPLUG_HOME/repos/seebi/dircolors-solarized/dircolors.256dark)
-    fi
-else
-    eval $(dircolors $ZPLUG_HOME/repos/seebi/dircolors-solarized/dircolors.256dark)
-fi
+eval $(dircolors $ZPLUG_HOME/repos/seebi/dircolors-solarized/dircolors.256dark)
 
 # fix autosuggest colors to work with solarized-dark
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=60'
@@ -103,14 +95,7 @@ bindkey '^[[B' history-substring-search-down
 # ------------------------------
 # Sources
 # ------------------------------
-# prompt configuration
-source $ZDOTDIR/prompt.zsh
-
-# functions
-source $ZDOTDIR/functions.zsh
-
-# aliases
-source $ZDOTDIR/aliases.zsh
-
-# local configuration (if present)
-[[ -s $ZDOTDIR/local.zsh ]] && source $ZDOTDIR/local.zsh || true
+# source all .zsh files in ZDOTDIR
+for file in $ZDOTDIR/*.zsh; do
+    source $file
+done

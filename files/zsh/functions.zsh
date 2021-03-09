@@ -11,35 +11,17 @@ function cdg () {
     # get root path of git repo
     local root_path=$(git rev-parse --show-toplevel)
 
-    # ensure home directory path is correct
-    if [[ $root_path == /local/home* ]]; then
-        local root_path=${root_path/\/local\/home/\/home}
-    fi
-
     # cd to the root of the git repo
     cd "$root_path"
-}
-
-# ssh and automatically create/attach tmux session
-function ssht() {
-    ssh -t $@ "tmux attach -t 0 || tmux new -s 0"
 }
 
 # print time remaining for kerberos ticket
 function kcheck() {
     # define variables as local
-    local datecmd
     local kprintstr
     local kdate
     local ktimeleft
     local ktimestr
-
-    # use homebrew coreutils date on macos
-    if [[ "$OSTYPE" == darwin* ]]; then
-        datecmd='gdate'
-    else
-        datecmd='date'
-    fi
 
     # check kerberos ticket
     if (( $+commands[klist] )); then
@@ -47,8 +29,8 @@ function kcheck() {
             kprintstr="%B%F{red}00:00:00%f%b"
         else
             kdate="$(klist | grep 'krbtgt' | awk 'BEGIN { FS="  " } ; { print $2 }')"
-            ktimeleft=$(($($datecmd -d "$kdate" +%s) - $($datecmd +%s)))
-            ktimestr=$($datecmd -u -d @${ktimeleft} +%T)
+            ktimeleft=$(($(date -d "$kdate" +%s) - $(date +%s)))
+            ktimestr=$(date -u -d @${ktimeleft} +%T)
             if [[ $ktimeleft -le 18000 ]]; then
                 kprintstr="%B%F{yellow}$ktimestr%f%b"
             elif [[ $ktimeleft -le 7200 ]]; then
@@ -67,13 +49,9 @@ function kcheck() {
 # update various plugins and packages
 function updateall () {
     # vim-plug
-    if [[ -s $HOME/.local/share/nvim/site/autoload/plug.vim ]]; then
+    if [[ -s $HOME/.vim/autoload/plug.vim ]]; then
         print -P "%F{green}Updating vim:%f"
-        if (( $+commands[nvim] )); then
-            nvim -c "PlugUpgrade|PlugUpdate"
-        else
-            vim -c "PlugUpgrade|PlugUpdate"
-        fi
+        vim -c "PlugUpgrade|PlugUpdate"
         print "Update complete."
         print
     fi
@@ -96,14 +74,6 @@ function updateall () {
         print -P "%F{green}Updating pyenv:%f"
         pyenv update
         ~/.local/share/pyenv/versions/dotfiles/bin/pip install -U $(~/.local/share/pyenv/versions/dotfiles/bin/pip freeze --disable-pip-version-check | awk '{split($0, a, "=="); print a[1]}') --quiet --disable-pip-version-check
-        print
-    fi
-    # homebrew
-    if (( $+commands[brew] )); then
-        print -P "%F{green}Updating homebrew:%f"
-        brew update --force
-        brew upgrade --cleanup
-        brew cask upgrade
         print
     fi
 }

@@ -35,7 +35,7 @@ function get_background_jobs() {
 # ------------------------------
 # VCS Info
 # ------------------------------
-setopt prompt_subst		# allow functions in prompt
+setopt prompt_subst     # allow functions in prompt
 autoload -Uz vcs_info
 zstyle ':vcs_info:*' enable git
 zstyle ':vcs_info:*' check-for-changes true

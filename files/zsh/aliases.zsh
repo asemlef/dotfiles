@@ -4,31 +4,14 @@
 # use aliases with sudo
 alias sudo='sudo '
 
-# use neovim instead of vim
-if (( $+commands[nvim] )); then
-    alias vim='nvim'
-fi
-
 # use color with ls
-if [[ "$OSTYPE" == darwin* ]]; then
-    if (( $+commands[gls] )); then
-        alias ls="gls --color=auto"
-    else
-        alias ls="ls -G"
-    fi
-else
-    alias ls="ls --color=auto"
-fi
+alias ls="ls --color=auto"
 
 # alternate ls alias with nice formatting
 alias ll="ls -lA"
 
-# format diff nicely and use color if possible
-if (( $+commands[colordiff] )); then
-    alias diff='colordiff -u'
-else
-    alias diff='diff -u'
-fi
+# format diff nicely (color requires diff 3.6+)
+alias diff='diff -u --color'
 
 # use color with grep
 alias grep="grep --color=auto"

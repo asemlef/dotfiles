@@ -1,3 +1,4 @@
+*.bak
 *.sw?
 *.pyc
 __pycache__

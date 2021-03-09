@@ -3,7 +3,7 @@ set -euo pipefail
 IFS=$'\n\t'
 
 # VARIABLES
-pyver="3.7.3"
+pyver="3.8.5"
 ldir=$(dirname $0)
 
 # check if git is available
@@ -43,10 +43,10 @@ else
 fi
 ~/.local/share/pyenv/versions/dotfiles/bin/pip install --requirement $ldir/pip-pkgs.txt --quiet --disable-pip-version-check
 
-# symlink flake8
+# symlink pylint
 if [[ ! -d ~/.local/bin ]]; then
     mkdir ~/.local/bin
 fi
-if [[ ! -L ~/.local/bin/flake8 ]]; then
-    ln -s ~/.local/share/pyenv/versions/dotfiles/bin/flake8 ~/.local/bin/flake8
+if [[ ! -L ~/.local/bin/pylint ]]; then
+    ln -s ~/.local/share/pyenv/versions/dotfiles/bin/pylint ~/.local/bin/pylint
 fi

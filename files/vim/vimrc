@@ -1,0 +1,166 @@
+" ------------------------------
+" Plugins
+" ------------------------------
+" install vim-plug if absent
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+endif
+
+" install and configure plugins
+call plug#begin('~/.vim/plugged')
+    " --- General ---
+    Plug 'lifepillar/vim-solarized8'    " solarized theme
+    Plug 'airblade/vim-gitgutter'       " show git diff in gutter
+    Plug 'ryanoasis/vim-devicons'       " fancy icons for airline, etc
+    Plug 'ntpeters/vim-better-whitespace'   " whitespace fixer
+    Plug 'tmux-plugins/vim-tmux-focus-events'   " fix focus events in tmux
+
+    " --- Nerdtree ---
+    Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+    Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': 'NERDTreeToggle' }
+    map <C-n> :NERDTreeToggle<CR>
+
+    " --- Tagbar ---"
+    " (requires exuberant ctags)
+    Plug 'majutsushi/tagbar', { 'on': 'TagbarToggle' }
+    nmap <F8> :TagbarToggle<CR>
+
+    " --- Airline ---
+    Plug 'vim-airline/vim-airline'
+    Plug 'vim-airline/vim-airline-themes'
+    let g:airline_powerline_fonts=1
+    let g:airline_theme='solarized'
+    let g:airline_solarized_bg='dark'
+    let g:airline#extensions#tabline#enabled=1
+    let g:airline#extensions#tabline#buffer_idx_mode=1
+    nmap <leader>1 <Plug>AirlineSelectTab1
+    nmap <leader>2 <Plug>AirlineSelectTab2
+    nmap <leader>3 <Plug>AirlineSelectTab3
+    nmap <leader>4 <Plug>AirlineSelectTab4
+    nmap <leader>5 <Plug>AirlineSelectTab5
+    nmap <leader>6 <Plug>AirlineSelectTab6
+    nmap <leader>7 <Plug>AirlineSelectTab7
+    nmap <leader>8 <Plug>AirlineSelectTab8
+    nmap <leader>9 <Plug>AirlineSelectTab9
+
+    " --- Syntastic ---
+    Plug 'vim-syntastic/syntastic'
+    let g:syntastic_always_populate_loc_list = 1
+    let g:syntastic_check_on_open = 1
+    let g:syntastic_check_on_wq = 0
+    let g:syntastic_aggregate_errors = 1
+
+call plug#end()
+
+" automatically install new plugins
+if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
+    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC | q
+endif
+
+" ------------------------------
+" Navigation
+" ------------------------------
+set mouse=a         " enable mouse for all modes
+set ttymouse=xterm2 " improved mouse drag handling
+set scrolloff=3     " keep 3 lines visible when scrolling
+
+" ------------------------------
+" Editing
+" ------------------------------
+set backspace=indent,eol,start  " backspace works on everything
+set nrformats-=octal            " don't parse octal numbers for addition/subtraction
+set complete-=i                 " don't scan included files for word completion
+
+" ------------------------------
+" Style
+" ------------------------------
+syntax enable           " enable syntax highlighting
+set laststatus=2        " always show status bar
+set ruler               " show cursor position in status bar
+set showbreak=↪         " indicator for wrapped lines
+"set list                " always show unprintable characters
+set listchars=tab:▸\ ,trail:•,extends:›,precedes:‹,eol:↲,nbsp:␣
+set termguicolors       " use 24-bit colors
+set background=dark     " use dark background for theme
+silent! colorscheme solarized8  " use solarized8 theme if available
+
+" ------------------------------
+" Tabs & Indentation
+" ------------------------------
+filetype plugin indent on   " use indent settings from filetype
+set expandtab               " convert tabs to spaces
+set autoindent              " automatically indent new lines
+set tabstop=8               " tab characters are 8 spaces wide
+set softtabstop=4           " pressing tab button indents 4 spaces
+set shiftwidth=4            " indenting shifts 4 spaces
+
+" ------------------------------
+" Buffers
+" ------------------------------
+set hidden      " allow switching from modified buffers
+set confirm     " prompt for confirmation when quitting with unsaved changes
+
+" ------------------------------
+" Search
+" ------------------------------
+set hlsearch    " highlight search terms
+set ignorecase  " ignore letter case
+set smartcase   " DON'T ignore letter case if capitals are present
+set incsearch   " search as you type
+
+" use <C-L> to clear current highlight
+if maparg('<C-L>', 'n') ==# ''
+    nnoremap <silent> <C-L> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
+endif
+
+" ------------------------------
+" Backup & Swap
+" ------------------------------
+set writebackup " create a temporary backup of a file when writing
+set nobackup    " DON'T create a permanent backup of a file when writing
+set undofile    " keep persistent undo history
+set viminfo+=n~/.vim/viminfo    " store viminfo file here
+set backupdir=~/.vim/backup,.   " store backup files here
+set directory=~/.vim/swap//     " store swap files here
+set undodir=~/.vim/undo         " store undo files here
+
+" create necessary directories if absent
+for dirname in ["backup", "swap", "undo"]
+    if !isdirectory($HOME."/.vim/".dirname)
+        call mkdir($HOME."/.vim/".dirname, "p", 0700)
+    endif
+endfor
+
+" ------------------------------
+" Command
+" ------------------------------
+set showcmd         " show commands in the bottom right as they're typed
+set history=1000    " keep 1000 commands in history
+set wildmenu        " enable command completion menu
+
+" ------------------------------
+" Clipboard
+" ------------------------------
+" use OSC52 to yank to the system clipboard over SSH
+" (ironically, this works in iterm and the new windows terminal app, but not
+"  in any libvte-based terminals on linux)
+function! Osc52Yank()
+    let buffer=system('base64 -w0', @0)
+    let buffer=substitute(buffer, "\n$", "", "")
+    let buffer="\e]52;c;".buffer."\x07"
+
+    " Need special escaping if within tmux
+    if $TMUX != ''
+        let buffer="\ePtmux;\e".buffer."\e\\"
+    endif
+
+    silent exe "!echo -ne ".shellescape(buffer)." > /dev/tty"
+    redraw!
+endfunction
+
+command! Osc52CopyYank call Osc52Yank()
+
+" bind clipboard copy to <leader> + y
+nnoremap <leader>y :Osc52CopyYank<cr>
+vnoremap <leader>y :<C-u>norm! gvy<cr>:Osc52CopyYank<cr>
