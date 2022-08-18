@@ -76,4 +76,12 @@ function updateall () {
         ~/.local/share/pyenv/versions/dotfiles/bin/pip install -U $(~/.local/share/pyenv/versions/dotfiles/bin/pip freeze --disable-pip-version-check | awk '{split($0, a, "=="); print a[1]}') --quiet --disable-pip-version-check
         print
     fi
+    # homebrew
+    if (( $+commands[brew] )); then
+        print -P "%F{green}Updating homebrew:%f"
+        brew update --force
+        brew upgrade
+        brew cleanup
+        print
+    fi
 }
