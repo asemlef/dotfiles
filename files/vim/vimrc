@@ -16,12 +16,16 @@ call plug#begin('~/.vim/plugged')
     Plug 'ntpeters/vim-better-whitespace'   " whitespace fixer
     Plug 'tmux-plugins/vim-tmux-focus-events'   " fix focus events in tmux
 
+    " --- Special Filetypes ---
+    Plug 'hashivim/vim-terraform'       " syntax highlighting for terraform
+    let g:terraform_fmt_on_save=1
+
     " --- Nerdtree ---
     Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
     Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': 'NERDTreeToggle' }
     map <C-n> :NERDTreeToggle<CR>
 
-    " --- Tagbar ---"
+    " --- Tagbar ---
     " (requires exuberant ctags)
     Plug 'majutsushi/tagbar', { 'on': 'TagbarToggle' }
     nmap <F8> :TagbarToggle<CR>
@@ -44,12 +48,15 @@ call plug#begin('~/.vim/plugged')
     nmap <leader>8 <Plug>AirlineSelectTab8
     nmap <leader>9 <Plug>AirlineSelectTab9
 
-    " --- Syntastic ---
-    Plug 'vim-syntastic/syntastic'
-    let g:syntastic_always_populate_loc_list = 1
-    let g:syntastic_check_on_open = 1
-    let g:syntastic_check_on_wq = 0
-    let g:syntastic_aggregate_errors = 1
+    " --- ALE ---
+    Plug 'dense-analysis/ale'
+
+    " --- Syntastic (Deprecated) ---
+    "Plug 'vim-syntastic/syntastic'
+    "let g:syntastic_always_populate_loc_list = 1
+    "let g:syntastic_check_on_open = 1
+    "let g:syntastic_check_on_wq = 0
+    "let g:syntastic_aggregate_errors = 1
 
 call plug#end()
 
