@@ -69,7 +69,6 @@ endif
 " Navigation
 " ------------------------------
 set mouse=a         " enable mouse for all modes
-set ttymouse=xterm2 " improved mouse drag handling
 set scrolloff=3     " keep 3 lines visible when scrolling
 
 " ------------------------------
